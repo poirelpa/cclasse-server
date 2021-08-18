@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Home from "../components/Home.vue";
 import About from "../components/About.vue";
+import NotFound from "../components/NotFound.vue";
 
 const routes = [
   {
@@ -13,11 +14,11 @@ const routes = [
     name: "About",
     component: About,
   },
-  /*{ 404
+  {
     path: "/:catchAll(.*)",
     component: NotFound,
   },
-  {
+  /*{
     path: '/about',
     name: 'About',
     // route level code-splitting

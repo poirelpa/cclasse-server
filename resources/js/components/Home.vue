@@ -9,6 +9,11 @@
         this.$store.commit('increment')
         console.log(this.$store.state.count)
       }
+    },
+    mounted () {
+      axios
+        .get('/api/v1/classes')
+        .then(response => (console.log(response)))
     }
   }
 </script>
