@@ -1,23 +1,12 @@
 <template>
-  <div id="two-way-binding">
-    <p>{{ message }}</p>
-    <input v-model="message" />
-    <button @click="changeMessage">changer</button>
+  <div id="nav">
+    <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link>
   </div>
+  <router-view/>
 </template>
-
+<style>
+</style>
 
 <script>
-    export default {
-      data() {
-        return {
-          message: "test"
-        }
-      },
-        methods : {
-            changeMessage () {
-                this.message = "tata";
-            }
-        }
-    }
 </script>
