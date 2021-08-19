@@ -11,7 +11,7 @@ export default createStore({
     fetchClasses(state){
       return axios
         .get('/api/v1/classes')
-        .then(response => (this.commit('setClasses',response.data)))
+        .then(response => (this.commit('setClasses',response.data.data)))
     }
   },
   mutations: {

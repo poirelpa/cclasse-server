@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClassModel;
+use App\Http\Resources\ClassResource;
 use Illuminate\Http\Request;
 
 class ClassController extends Controller
@@ -14,7 +15,7 @@ class ClassController extends Controller
      */
     public function index()
     {
-        return ClassModel::all();
+        return ClassResource::collection(ClassModel::all());
     }
 
     /**
@@ -25,7 +26,7 @@ class ClassController extends Controller
      */
     public function store(Request $request)
     {
-        return ClassModel::create($request->all());
+        return new ClassResource(ClassModel::create($request->all()));
     }
 
     /**
@@ -37,7 +38,7 @@ class ClassController extends Controller
     public function show(ClassModel $class)
     {
         // return ClassModel::findOrFail($id);
-        return $class;
+        return new ClassResource($class);
     }
 
     /**
@@ -52,7 +53,7 @@ class ClassController extends Controller
         //$class = ClassModel::findOrFail($id);
         $class->update($request->all());
 
-        return $class;
+        return new ClassResource($class);
     }
 
     /**
