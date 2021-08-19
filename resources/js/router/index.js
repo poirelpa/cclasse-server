@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Class from "../components/Class.vue";
+import NewClass from "../components/NewClass.vue";
 import Home from "../components/Home.vue";
 import NotFound from "../components/NotFound.vue";
 
@@ -13,6 +14,11 @@ const routes = [
         path: "/class/:id",
         name: "Class",
         component: Class,
+    },
+    {
+        path: "/class/new",
+        name: "NewClass",
+        component: NewClass,
     },
     {
         path: "/:catchAll(.*)",

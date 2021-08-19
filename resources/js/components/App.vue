@@ -1,17 +1,17 @@
 <template>
-<div class="flex">
-  <div class="flex-none w-60">
+<div class="flex p-3">
+  <div class="flex-none w-60 p-2 bg-yellow-200">
     <nav>
       <ul>
+        <li><router-link to="/"><i class="fas fa-home"></i> Accueil</router-link></li>
         <li>
           <Classes></Classes>
         </li>
-        <li><router-link to="/">Home</router-link></li>
-        <li><router-link to="/about">About</router-link></li>
+        <li><router-link to="/about"><i class="fas fa-comment-dots"></i> A propos</router-link></li>
       </ul>
     </nav>
   </div>
-  <div class="flex-1">
+  <div class="flex-1 bg-gray-100 p-2">
     <router-view/>
   </div>
 </div>

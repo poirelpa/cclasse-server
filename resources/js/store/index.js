@@ -4,19 +4,28 @@ import { createStore } from 'vuex'
 export default createStore({
   state () {
     return {
-      classes:[]
+      classes:{}
     }
   },
   actions: {
-    getClasses(state){
+    getClasses(context){
       return axios
         .get('/api/v1/classes')
-        .then(response => (this.commit('setClasses',response.data.data)))
+        .then(response => (context.commit('setClasses',response.data.data)))
+    },
+    createClass(context,cl){
+      return axios
+      .post('/api/v1/classes',cl)
+      .then(response => (context.commit('addClass',response.data.data)))
     }
   },
   mutations: {
     setClasses(state, classes){
-      state.classes = classes
+      state.classes = classes.reduce((map,cl)=>{map[cl.id]=cl;return map},{})
+    },
+    addClass(state, cl){
+      console.log(cl)
+      state.classes[cl.id] = cl;
     }
   }
 })
