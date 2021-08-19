@@ -4,12 +4,19 @@ import { createStore } from 'vuex'
 export default createStore({
   state () {
     return {
-      count: 0
+      classes:[]
+    }
+  },
+  actions: {
+    fetchClasses(state){
+      return axios
+        .get('/api/v1/classes')
+        .then(response => (this.commit('setClasses',response.data)))
     }
   },
   mutations: {
-    increment (state) {
-      state.count++
+    setClasses(state, classes){
+      state.classes = classes
     }
   }
 })

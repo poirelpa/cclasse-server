@@ -1,19 +1,17 @@
 <template>
   <h1>Accueil</h1>
   <button @click="increment">increment</button>
+  <ul>
+    <li v-for="classItem of classes">{{classItem.name}}</li>
+  </ul>
 </template>
 <script>
   export default {
-    methods: {
-      increment() {
-        this.$store.commit('increment')
-        console.log(this.$store.state.count)
-      }
+    computed: {
+      classes() { return this.$store.state.classes}
     },
     mounted () {
-      axios
-        .get('/api/v1/classes')
-        .then(response => (console.log(response)))
+      this.$store.dispatch('fetchClasses')
     }
   }
 </script>
