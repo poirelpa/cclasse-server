@@ -13,6 +13,15 @@
     </style>
 </head>
 <body>
+<i class="fa fa-copy"></i>
+
+<i class="fa fa-save"></i>
+
+<i class="fa fa-trash"></i>
+
+<i class="fa fa-home"></i>
+
+
 <div id="app">
 </div>
 <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
