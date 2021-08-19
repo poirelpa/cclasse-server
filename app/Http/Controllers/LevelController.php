@@ -14,8 +14,13 @@ class LevelController extends Controller
      */
     public function index()
     {
-        //
+        return [];
     }
+
+   public function indexById($class)
+   {
+       return $class;
+   }
 
     /**
      * Store a newly created resource in storage.

@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\LevelController;
 
 class ClassResource extends JsonResource
 {
@@ -22,7 +23,8 @@ class ClassResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             '_links' => [
-                'self' => action([ClassController::class, 'show'], $this)
+                'self' => action([ClassController::class, 'show'], $this),
+                'levels' => action([LevelController::class, 'indexById'], $this),
             ]
         ];
     }
