@@ -19,8 +19,7 @@ class ClassResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'year' => $this->year,
             'levels' => $this->levels,
             '_links' => [
                 'self' => action([ClassController::class, 'show'], $this),

@@ -18,6 +18,9 @@
       create(){
         this.$store.dispatch("createClass",{name:this.name})
       }
+    },
+    mounted() {
+      this.$store.dispatch("getLevels")
     }
   }
 </script>
