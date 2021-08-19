@@ -6,20 +6,8 @@
     <meta name="csrf-token" value="{{ csrf_token() }}"/>
     <title>CClasse</title>
     <link href="{{ mix('css/app.css') }}" type="text/css" rel="stylesheet"/>
-    <style>
-        .bg-light {
-            background-color: #eae9e9 !important;
-        }
-    </style>
 </head>
 <body>
-<i class="fa fa-copy"></i>
-
-<i class="fa fa-save"></i>
-
-<i class="fa fa-trash"></i>
-
-<i class="fa fa-home"></i>
 
 
 <div id="app">

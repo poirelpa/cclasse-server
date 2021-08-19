@@ -1,13 +1,22 @@
 <template>
-  <div>
-    <Classes></Classes>
+<div class="flex">
+  <div class="flex-none w-60">
+    <nav>
+      <ul>
+        <li>
+          <Classes></Classes>
+        </li>
+        <li><router-link to="/">Home</router-link></li>
+        <li><router-link to="/about">About</router-link></li>
+      </ul>
+    </nav>
   </div>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div class="flex-1">
+    <router-view/>
   </div>
-  <router-view/>
+</div>
 </template>
+
 <style>
 </style>
 
