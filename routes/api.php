@@ -22,4 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('/v1/classes', ClassController::class);
-Route::get('/v1/classes/{class}/levels', [LevelController::class, 'indexById']);
+Route::get('/v1/classes/{class}/levels', [ClassController::class, 'getLevels']);

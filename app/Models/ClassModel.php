@@ -10,6 +10,7 @@ class ClassModel extends Model
     use HasFactory;
 
     protected $table="classes";
+    protected $with="levels";
     /**
      * The attributes that are mass assignable.
      *
