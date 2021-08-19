@@ -26,7 +26,9 @@ class ClassController extends Controller
      */
     public function store(Request $request)
     {
-        return new ClassResource(ClassModel::create($request->all()));
+        $class = ClassModel::create($request->all());
+        $class->levels()->attach($request->input('levels'));
+        return new ClassResource($class);
     }
 
     /**

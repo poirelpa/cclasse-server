@@ -1,6 +1,6 @@
 <template>
   <h1>{{classItem?.name}}</h1>
-  {{JSON.stringify(classItem)}}
+  <debug :obj="classItem"/>
 </template>
 
 <script>

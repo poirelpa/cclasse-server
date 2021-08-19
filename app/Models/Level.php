@@ -13,7 +13,7 @@ class Level extends Model
     protected static function booted()
     {
       static::addGlobalScope('order', function (Builder $builder) {
-           $builder->orderBy('order_index', 'desc');
+           $builder->orderBy('order_index', 'asc');
       });
     }
 }

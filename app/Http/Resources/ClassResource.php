@@ -20,7 +20,7 @@ class ClassResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'year' => $this->year,
-            'levels' => $this->levels,
+            'levels' => LevelResource::collection($this->levels),
             '_links' => [
                 'self' => action([ClassController::class, 'show'], $this),
             ]

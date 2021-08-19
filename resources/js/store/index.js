@@ -1,7 +1,7 @@
 import { createStore } from 'vuex'
 
 // Create a new store instance.
-let indexById = function(a) {a.reduce((map,obj)=>{map[obj.id]=obj;return map},{})}
+let indexById = function(a) {return a.reduce((map,obj)=>{map[obj.id]=obj;return map},{})}
 
 export default createStore({
   state () {
@@ -30,7 +30,7 @@ export default createStore({
   },
   mutations: {
     setClasses(state, classes){
-      state.classes = classes.reduce((map,obj)=>{map[obj.id]=cl;return map},{})
+      state.classes = indexById(classes)
     },
     addClass(state, cl){
       state.classes[cl.id] = cl;
