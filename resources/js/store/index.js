@@ -8,7 +8,7 @@ export default createStore({
     }
   },
   actions: {
-    fetchClasses(state){
+    getClasses(state){
       return axios
         .get('/api/v1/classes')
         .then(response => (this.commit('setClasses',response.data.data)))
