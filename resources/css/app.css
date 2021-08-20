@@ -12,14 +12,19 @@ h1{
   @apply text-sec-900 uppercase font-extrabold pb-2
 }
 h2{
-  @apply text-sec-900 text-sm uppercase font-bold py-1 block
+  @apply text-sec-900 text-sm uppercase font-bold pb-1 pt-2 block
 }
 a{
   @apply text-pri-600 hover:text-pri-800
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 input[type='number']{
   -moz-appearance:textfield;
 }
 button{
-  @apply p-1 mt-2 rounded-lg bg-gray-500 hover:bg-pri-400 border-sec-300 text-white font-semibold px-3 uppercase;
+  @apply mt-2 rounded-lg bg-sec-600 hover:bg-pri-400 border-sec-300 text-white font-semibold px-3 py-2 uppercase shadow text-sm;
 }

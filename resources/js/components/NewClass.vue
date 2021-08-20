@@ -1,12 +1,12 @@
 <template>
-  <form @submit.prevent="create" class="bg-white shadow rounded p-4">
+  <form @submit.prevent="create" class="bg-white shadow rounded p-4 mx-auto max-w-2xl">
     <h1>Nouvelle classe : {{name}}</h1>
     <div>
       <label for="year" class=""><h2>Année :</h2></label>
       <input type="number" v-model="year" id="year" class="w-16 m-0"/> / {{year+1}}
     </div>
 
-    <h2>Niveau(x) :</h2>
+    <h2 v-if="Object.keys(levels).length">Niveau(x) :</h2>
     <div class="flex flex-wrap">
       <div v-for="level of levels" class="mx-2 w-14 flex-shrink-0">
         <input v-model="checkedLevels" type="checkbox" :id="level.id" :value="level.id" />
@@ -34,12 +34,13 @@
       }
     },
     computed: {
-      levels() { return this.$store.state.levels ?? []},
-      name() { return printYear(this.year) + (this.checkedLevels.length ? ' (' + this.checkedLevels.map(l=>this.levels[l].name).join(' ') + ')': '')}
+      levels() { return this.$store.getters.levels },
+    name() { return printYear(this.year) + (this.checkedLevels.length ? ' (' + this.checkedLevels.map(l=>this.levels[l].name).join(' ') + ')': '')}
     },
     methods: {
-      create(){
-        this.$store.dispatch("createClass",{name:this.name, year:this.year, levels:this.checkedLevels})
+      async create(){
+        let cl = await this.$store.dispatch("createClass",{name:this.name, year:this.year, levels:this.checkedLevels})
+        this.$router.push({name:'Class',params:{id:cl.id}})
       }
     },
     mounted() {
