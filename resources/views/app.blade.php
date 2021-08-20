@@ -6,13 +6,9 @@
     <meta name="csrf-token" value="{{ csrf_token() }}"/>
     <title>CClasse</title>
     <link href="{{ mix('css/app.css') }}" type="text/css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <script src="{{ mix('js/app.js') }}" defer></script>
+    <!--<link rel="stylesheet" href="https://rsms.me/inter/inter.css">-->
 </head>
 <body>
-
-
-<div id="app">
-</div>
-<script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
 </body>
 </html>

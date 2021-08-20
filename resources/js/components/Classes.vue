@@ -1,12 +1,11 @@
 <template>
-  <h1>Classes</h1>
   <ul>
-    <li v-for="classItem of classes" class="pl-5">
-      <router-link :to="{name:'Class',params:{id:classItem.id}}">
+    <li v-for="classItem of classes">
+      <router-link :to="{name:'Class',params:{id:classItem.id}}" :title="classItem.name">
         <i class="fas fa-users"></i> {{classItem.name}}
       </router-link>
     </li>
-    <li class="pl-5">
+    <li>
       <router-link :to="{name:'NewClass'}">
         <i class="fas fa-plus"></i> Créer
       </router-link>

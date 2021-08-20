@@ -1,28 +1,44 @@
 <template>
-<div class="flex p-3">
-  <div class="flex-none w-60 p-2 bg-yellow-200">
-    <nav>
-      <ul>
-        <li><router-link to="/"><i class="fas fa-home"></i> Accueil</router-link></li>
-        <li>
-          <Classes></Classes>
+  <div>
+    <side-bar>
+
+      <h1>
+        CClasse2
+      </h1>
+      <!-- Divider -->
+      <hr class="my-2 md:min-w-full" />
+      <!-- Navigation -->
+      <ul class="md:flex-col md:min-w-full flex flex-col list-none">
+        <li class="items-center">
+          <router-link :to="{name:'Home'}" class="py-3 block">
+            <i class="fas fa-home"></i> Accueil
+          </router-link>
         </li>
-        <li><router-link to="/about"><i class="fas fa-comment-dots"></i> A propos</router-link></li>
       </ul>
-    </nav>
+      <!-- Divider -->
+      <hr class="my-2 md:min-w-full" />
+      <!-- Classes -->
+      <h2
+        class="md:min-w-full block no-underline"
+      >
+        Classes
+      </h2>
+      <!-- Navigation -->
+      <classes class="truncate"/>
+    </side-bar>
+    <div class="relative md:ml-64 bg-gray-50 p-3 min-h-screen">
+      <router-view/>
+    </div>
   </div>
-  <div class="flex-1 bg-gray-100 p-2">
-    <router-view/>
-  </div>
-</div>
 </template>
 
 <style>
 </style>
 
 <script>
-  import Classes from "../components/Classes.vue";
+  import SideBar from "./SideBar.vue";
+  import Classes from "./Classes.vue";
   export default {
-    components:{Classes}
+    components:{SideBar, Classes}
   }
 </script>

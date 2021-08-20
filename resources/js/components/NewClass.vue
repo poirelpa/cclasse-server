@@ -1,16 +1,28 @@
 <template>
-  <h1>{{name}}</h1>
-  <form @submit.prevent="create">
-    <input type="number" v-model="year">
-    <div v-for="level of levels">
-      <input v-model="checkedLevels" type="checkbox" :id="level.id" :value="level.id" />
-      <label :for="level.id">{{level.name}}</label>
+  <form @submit.prevent="create" class="bg-white shadow rounded p-4">
+    <h1>Nouvelle classe : {{name}}</h1>
+    <div>
+      <label for="year" class=""><h2>Année :</h2></label>
+      <input type="number" v-model="year" id="year" class="w-16 m-0"/> / {{year+1}}
     </div>
-    <button type="submit" class="border p-1 mt-2 border-gray-600 rounded">Créer</button>
+
+    <h2>Niveau(x) :</h2>
+    <div class="flex flex-wrap">
+      <div v-for="level of levels" class="mx-2 w-14 flex-shrink-0">
+        <input v-model="checkedLevels" type="checkbox" :id="level.id" :value="level.id" />
+        <label :for="level.id" class="ml-1"> {{level.name}}</label>
+      </div>
+     </div>
+     <button type="submit">Créer</button>
   </form>
   <debug :obj="{name:name, year:year, levels:checkedLevels}"/>
 </template>
-
+<style>
+  div.grid{
+    grid-template-rows: repeat(auto-fit,minmax(300px,1fr));
+    grid-auto-flow: column;
+  }
+</style>
 <script>
 
   let printYear = function(year){return year + "/" + (year+1)}

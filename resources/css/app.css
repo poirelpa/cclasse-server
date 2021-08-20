@@ -7,3 +7,19 @@
 @import '~@fortawesome/fontawesome-free/css/regular';
 @import '~@fortawesome/fontawesome-free/css/solid';
 @import '~@fortawesome/fontawesome-free/css/brands';
+
+h1{
+  @apply text-sec-900 uppercase font-extrabold pb-2
+}
+h2{
+  @apply text-sec-900 text-sm uppercase font-bold py-1 block
+}
+a{
+  @apply text-pri-600 hover:text-pri-800
+}
+input[type='number']{
+  -moz-appearance:textfield;
+}
+button{
+  @apply p-1 mt-2 rounded-lg bg-gray-500 hover:bg-pri-400 border-sec-300 text-white font-semibold px-3 uppercase;
+}
