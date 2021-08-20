@@ -6,6 +6,7 @@
     <meta name="csrf-token" value="{{ csrf_token() }}"/>
     <title>CClasse</title>
     <link href="{{ mix('css/app.css') }}" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 </head>
 <body>
 
