@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="create" class="bg-white shadow rounded p-4 mx-auto max-w-2xl">
+  <form @submit.prevent="save" class="bg-white shadow rounded p-4 mx-auto max-w-2xl">
     <h1>Nouvelle classe : {{name}}</h1>
     <div>
       <label for="year" class=""><h2>Année :</h2></label>
@@ -13,9 +13,14 @@
         <label :for="level.id" class="ml-1"> {{level.name}}</label>
       </div>
      </div>
-     <button type="submit">Créer</button>
+     <button type="submit" :disabled="clicked" v-if="!id">Créer</button>
+     <span v-else class="space-x-2">
+       <button type="button" @click="initDataFromStore" :disabled="clicked">Annuler</button>
+       <button type="button" @click="deleteClass" :disabled="clicked">Supprimer</button>
+       <button type="submit" :disabled="clicked">Modifier</button>
+     </span>
   </form>
-  <debug :obj="checkedLevels"/>
+  <debug :obj="storeClass"/>
 </template>
 <style>
   div.grid{
@@ -30,13 +35,20 @@
     data() {
       return {
         year:0,
-        checkedLevels:[]
+        checkedLevels:[],
+        clicked:false
+      }
+    },
+    props:{
+      id:{
+        type:Number,
+        default:NaN
       }
     },
     computed: {
+      isNew() { return Number.isNaN(this.id) },
       levels() { return this.$store.getters.levels },
       name() { return printYear(this.year) + (this.checkedLevels.length ? ' (' + this.checkedLevels.sort().map(id=>this.$store.getters.levelsById[id]?.name).join(' ') + ')': '')},
-      id() { return this.$route.params.id },
       storeClass() { return this.$store.getters.classesById[this.id] ?? {}},
       storeYear() { return this.storeClass.year ?? new Date().getFullYear()},
       storeCheckedLevels() { return this.storeClass.levels?.map(l=>l.id) ?? []}
@@ -50,18 +62,42 @@
       }
     },
     methods: {
-      async create(){
-        let cl = await this.$store.dispatch("createClass",{name:this.name, year:this.year, levels:this.checkedLevels})
-        this.$router.push({name:'Class',params:{id:cl.id}})
+      async save(){
+        this.clicked = true
+        if(this.isNew){
+          let cl = await this.$store.dispatch("createClass",{name:this.name, year:this.year, levels:this.checkedLevels})
+          this.$router.push({name:'Class',params:{id:cl.id}})
+        } else {
+          await this.$store.dispatch("updateClass",Object.assign({},this.storeClass,{name:this.name, year:this.year, levels:this.checkedLevels}))
+          console.log(this.$store.state.classes.data[this.id])
+        }
+        this.clicked = false
+      },
+      async deleteClass(){
+        if(confirm("Veuillez confirmer la suppression")){
+          this.clicked = true
+          await this.$store.dispatch("deleteClass",this.storeClass)
+          this.$router.push({name:'Home'})
+        }
       },
       initDataFromStore(){
-          this.year=this.storeYear
-          this.checkedLevels = this.storeCheckedLevels
+        if(!this.isNew
+          && this.$store.state.classes.isLoaded
+          && this.$store.getters.classesById[this.id]==undefined){
+          this.$router.push('/missing')
+        }
+        console.log('init',this.storeClass)
+
+        this.year=this.storeYear
+        this.checkedLevels = this.storeCheckedLevels
       }
     },
-    mounted() {
+    created() {
       this.$store.dispatch("getLevels")
+    },
+    mounted() {
       this.initDataFromStore()
+      this.clicked = false
     }
   }
 </script>

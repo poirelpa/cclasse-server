@@ -26,5 +26,6 @@ input[type='number']{
   -moz-appearance:textfield;
 }
 button{
-  @apply mt-2 rounded-lg bg-sec-600 hover:bg-pri-400 border-sec-300 text-white font-semibold px-3 py-2 uppercase shadow text-sm;
+  @apply mt-2 rounded-lg bg-sec-600 hover:bg-pri-400 border-sec-300 text-white font-semibold px-3 py-2 uppercase shadow text-sm
+  disabled:opacity-50 disabled:bg-gray-600 disabled:cursor-default;
 }

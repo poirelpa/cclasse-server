@@ -28,7 +28,7 @@ class ClassController extends Controller
     {
         $class = ClassModel::create($request->all());
         $class->levels()->attach($request->input('levels'));
-        return new ClassResource($class);
+        return new ClassResource($class->fresh('levels'));
     }
 
     /**
@@ -55,7 +55,8 @@ class ClassController extends Controller
         //$class = ClassModel::findOrFail($id);
         $class->update($request->all());
 
-        return new ClassResource($class);
+        $class->levels()->sync($request->input('levels'));
+        return new ClassResource($class->fresh('levels'));
     }
 
     /**

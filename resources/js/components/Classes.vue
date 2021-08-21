@@ -17,9 +17,8 @@
     computed: {
       classes() { return this.$store.getters.classes }
     },
-    async mounted () {
-      await this.$store.dispatch('getClasses')
-      //console.log(this.classes)
+    created() {
+      this.$store.dispatch("getClasses")
     }
   }
 </script>

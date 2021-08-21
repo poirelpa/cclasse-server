@@ -15,7 +15,7 @@ class CreateClassesLevels extends Migration
     {
         Schema::create('classes_levels', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('class_id')->constrained('classes');
+            $table->foreignId('class_id')->constrained('classes')->onDelete('cascade');
             $table->foreignid('level_id')->constrained('levels');
             $table->timestamps();
         });
