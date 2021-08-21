@@ -3,7 +3,7 @@
     <side-bar>
 
       <h1>
-        CClasse2
+        <span class="text-2xl"><span class="-mr-3 text-sec-700">C</span>C</span>lasse
       </h1>
       <!-- Divider -->
       <hr class="my-2 md:min-w-full" />

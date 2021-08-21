@@ -26,6 +26,7 @@
         "vuex": "^4.0.2"
     },
     "dependencies": {
+        "inter-ui": "^3.19.3",
         "tailwindcss": "^2.2.7"
     }
 }

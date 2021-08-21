@@ -28,12 +28,10 @@
     </form>
   <debug :obj="storeClass"/>
 </template>
+
 <style>
-  div.grid{
-    grid-template-rows: repeat(auto-fit,minmax(300px,1fr));
-    grid-auto-flow: column;
-  }
 </style>
+
 <script>
 
   let printYear = function(year){return year + "/" + (year+1)}

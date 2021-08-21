@@ -8,6 +8,7 @@
 @import '~@fortawesome/fontawesome-free/css/solid';
 @import '~@fortawesome/fontawesome-free/css/brands';
 
+@import "inter-ui/inter.css";
 h1{
   @apply text-sec-900 uppercase font-extrabold pb-2
 }
@@ -15,7 +16,8 @@ h2{
   @apply text-sec-900 text-sm uppercase font-bold pb-1 pt-2 block
 }
 a{
-  @apply text-pri-600 hover:text-pri-800
+  outline:none;
+  @apply text-pri-600 hover:text-pri-800 focus:text-pri-800
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -25,11 +27,52 @@ input::-webkit-inner-spin-button {
 input[type='number']{
   -moz-appearance:textfield;
 }
+[type='text'],
+[type='email'],
+[type='url'],
+[type='password'],
+[type='number'],
+[type='date'],
+[type='datetime-local'],
+[type='month'],
+[type='search'],
+[type='tel'],
+[type='time'],
+[type='week'],
+[multiple],
+textarea,
+select{
+  @apply py-0 border-2 border-sec-700 rounded focus:border-pri-500
+}
+[type='text']:focus,
+[type='email']:focus,
+[type='url']:focus,
+[type='password']:focus,
+[type='number']:focus,
+[type='date']:focus,
+[type='datetime-local']:focus,
+[type='month']:focus,
+[type='search']:focus,
+[type='tel']:focus,
+[type='time']:focus,
+[type='week']:focus,
+[type='checkbox']:focus,
+[type='radio']:focus,
+[multiple]:focus,
+textarea:focus,
+select:focus,
+button:focus{
+  outline:none;box-shadow:none;-webkit-box-shadow:none;
+}
 button{
-  @apply mt-2 rounded-lg bg-sec-600 hover:bg-pri-400 border-sec-300 text-white font-semibold px-3 py-2 uppercase shadow text-sm
+  @apply mt-2 rounded-lg bg-sec-600 hover:bg-pri-500 focus:bg-pri-500 border-sec-300 text-white font-semibold px-3 py-2 uppercase shadow text-sm
   disabled:opacity-50 disabled:bg-gray-600 disabled:cursor-default;
 }
 
 [type='checkbox'],[type='radio'] {
-  @apply text-pri-500
+  @apply text-pri-500 border-2 border-sec-700 rounded focus:border-pri-500
+}
+[type='checkbox']:checked:focus,[type='radio']:checked:focus,
+[type='checkbox']:checked:hover,[type='radio']:checked:hover {
+  @apply border-pri-500 text-pri-300
 }
