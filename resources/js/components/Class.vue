@@ -18,11 +18,11 @@
             <label :for="level.id" class="ml-1"> {{level.name}}</label>
           </div>
         </div>
-        <button type="submit" :disabled="clicked" v-if="!id">Créer</button>
+        <button type="submit" :disabled="buttonClicked" v-if="!id">Créer</button>
         <span v-else class="space-x-2">
-          <button type="button" @click="initDataFromStore" :disabled="clicked">Annuler</button>
-          <button type="button" @click="deleteClass" :disabled="clicked">Supprimer</button>
-          <button type="submit" :disabled="clicked">Modifier</button>
+          <button type="button" @click="initDataFromStore" :disabled="buttonClicked">Annuler</button>
+          <button type="button" @click="deleteClass" :disabled="buttonClicked">Supprimer</button>
+          <button type="submit" :disabled="buttonClicked">Modifier</button>
         </span>
       </loading>
     </form>
@@ -40,7 +40,7 @@
       return {
         year:0,
         checkedLevels:[],
-        clicked:false
+        buttonClicked:false
       }
     },
     props:{
@@ -68,18 +68,18 @@
     },
     methods: {
       async save(){
-        this.clicked = true
+        this.buttonClicked = true
         if(this.isNew){
           let cl = await this.$store.dispatch("createClass",{name:this.name, year:this.year, levels:this.checkedLevels})
           this.$router.push({name:'Class',params:{id:cl.id}})
         } else {
           await this.$store.dispatch("updateClass",Object.assign({},this.storeClass,{name:this.name, year:this.year, levels:this.checkedLevels}))
         }
-        this.clicked = false
+        this.buttonClicked = false
       },
       async deleteClass(){
         if(confirm("Veuillez confirmer la suppression")){
-          this.clicked = true
+          this.buttonClicked = true
           await this.$store.dispatch("deleteClass",this.storeClass)
           this.$router.push({name:'Home'})
         }
@@ -100,7 +100,7 @@
     },
     mounted() {
       this.initDataFromStore()
-      this.clicked = false
+      this.buttonClicked = false
     }
   }
 </script>

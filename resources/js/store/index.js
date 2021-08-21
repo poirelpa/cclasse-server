@@ -62,6 +62,22 @@ export default createStore({
       return axios
         .get('/api/v1/levels')
         .then(response => context.commit('setLevels',response.data.data))
+    },
+    login(context, credentials) {
+      return axios.post('http://cclasse.test/oauth/token',{
+        grant_type: "password",
+        client_id: "2",
+        client_secret: "EEeXAjmAuUA5r93AJI2THCUdDil4WZkUwCll28uE",
+        username: credentials.email,
+        password: credentials.password,
+        scope: "*"
+      }).then(response => {
+        if(credentials.remember){
+          //local storage
+        }
+        console.log(response)
+        context.commit('setTokens',response.data)
+      })
     }
   },
   mutations: {
@@ -83,6 +99,10 @@ export default createStore({
     },
     setLevels(state, levels){
       state.levels = indexById(levels)
+    },
+    setTokens(state, tokens){
+      state.user.token = tokens
+      state.user.isConnected = true
     }
   }
 })

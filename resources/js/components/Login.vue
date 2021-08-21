@@ -26,17 +26,23 @@
       </router-link>
     </form>
 </template>
-export default {
-  data() {
-    return {
-      email:"",
-      password:"",
-      remember:false
-    }
-  },
-  methods: {
-    login(){
 
+<script>
+  export default {
+    data() {
+      return {
+        email:"",
+        password:"",
+        remember:false,
+        buttonClicked:false
+      }
+    },
+    methods: {
+      async login(){
+        this.buttonClicked = true
+        await this.$store.dispatch("login",{email:this.email, password:this.password, remember: this.remember})
+        this.$router.push({name:'Home'})
+      }
     }
   }
-}
+</script>
