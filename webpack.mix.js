@@ -16,3 +16,13 @@ mix.js('resources/js/app.js', 'public/js').vue()
       require("tailwindcss"),
         //
     ])
+    .webpackConfig(webpack => {
+      return {
+        plugins:[
+          new webpack.DefinePlugin({
+            __VUE_OPTIONS_API__ : true,
+            __VUE_PROD_DEVTOOLS__ : false
+          })
+        ]
+      }
+    })

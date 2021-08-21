@@ -74,7 +74,6 @@ export default createStore({
     },
     updateClass(state, cl){
       state.classes.data[cl.id] = cl
-      console.log('s',state.classes.data[cl.id], cl.id, cl)
       return state.classes.data[cl.id]
     },
     deleteClass(state, id){

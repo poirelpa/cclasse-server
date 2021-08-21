@@ -24,7 +24,7 @@
         Classes
       </h2>
       <!-- Navigation -->
-      <classes class="truncate"/>
+      <classes/>
     </side-bar>
     <div class="relative md:ml-64 bg-gray-50 p-3 min-h-screen">
       <router-view/>
