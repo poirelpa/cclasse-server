@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="save" class="bg-white shadow rounded p-4 mx-auto max-w-2xl">
+    <form @submit.prevent="save" class="bg-white shadow rounded p-4 mx-auto max-w-2xl flex-grow">
 
       <loading :isLoaded="isLoaded">
         <h1>

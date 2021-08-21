@@ -1,6 +1,9 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Class from "../components/Class.vue";
 import Home from "../components/Home.vue";
+import Login from "../components/Login.vue";
+import Register from "../components/Login.vue";
+import RecoverPassword from "../components/Login.vue";
 import NotFound from "../components/NotFound.vue";
 
 const routes = [
@@ -8,6 +11,21 @@ const routes = [
         path: "/",
         name: "Home",
         component: Home,
+    },
+    {
+        path: "/login",
+        name: "Login",
+        component: Login,
+    },
+    {
+        path: "/register",
+        name: "Register",
+        component: Register,
+    },
+    {
+        path: "/recover-password",
+        name: "RecoverPassword",
+        component: RecoverPassword,
     },
     {
         path: "/class/:id(\\d+)",

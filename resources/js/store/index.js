@@ -17,6 +17,7 @@ export default createStore({
     return {
       classes:{data:{},order:[],isLoaded:false},
       levels:{data:{},order:[],isLoaded:false},
+      user:{isConnected:false}
     }
   },
   getters: {
