@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\LevelController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +18,13 @@ use App\Http\Controllers\LevelController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('v1/auth/current', [AuthController::class,'current'])
+    ->middleware('auth:api');
+Route::post('v1/auth/resetPassword', [AuthController::class,'resetPassword']);
 
+
+Route::apiResource('/v1/classes', ClassController::class)
+    ->middleware('auth:api');
 Route::apiResource('/v1/classes', ClassController::class)
     ->middleware('auth:api');
 Route::get('/v1/classes/{class}/levels', [ClassController::class, 'getLevels'])

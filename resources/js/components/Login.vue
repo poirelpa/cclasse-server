@@ -21,7 +21,7 @@
       <router-link :to="{name:'Register'}" class="block text-sm">
         <i class="fas fa-user-plus"></i> Créer un compte
       </router-link>
-      <router-link :to="{name:'RecoverPassword'}" class="block text-sm">
+      <router-link :to="{name:'ResetPassword'}" class="block text-sm">
         <i class="fas fa-key"></i> Mot de passe oublié
       </router-link>
     </form>

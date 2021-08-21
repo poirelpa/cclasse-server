@@ -38,9 +38,15 @@ let logout = function(){
 }
 
 let getUser = function(){
-  return axios.get('/api/user').then(response => {
+  return axios.get('/api/v1/auth/current').then(response => {
     return response.data
   })
 }
 
-export default {getToken, useToken, logout, getUser}
+let resetPassword = function(email){
+  return axios.post('/api/v1/auth/resetPassword',{email:email}).then(response => {
+    return response.data
+  })
+}
+
+export default {getToken, useToken, logout, getUser, resetPassword}

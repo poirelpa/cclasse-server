@@ -4,7 +4,7 @@ import Home from "../components/Home.vue";
 import Login from "../components/Login.vue";
 import Logout from "../components/Logout.vue";
 import Register from "../components/Login.vue";
-import RecoverPassword from "../components/Login.vue";
+import ResetPassword from "../components/ResetPassword.vue";
 import NotFound from "../components/NotFound.vue";
 
 import store from '../store'
@@ -47,9 +47,9 @@ const routes = [
         }
     },
     {
-        path: "/recover-password",
-        name: "RecoverPassword",
-        component: RecoverPassword,
+        path: "/reset-password",
+        name: "ResetPassword",
+        component: ResetPassword,
         meta: {
           guest:true,
           auth:false

@@ -2,6 +2,10 @@
 
 todo
 
+- oauth
+
+- gestion propre du versionning API
+
 classes
 - gestion des erreurs techniques
 - validation des formulaires
@@ -15,7 +19,6 @@ cahier-journal
 
 
 
-- oauth
 - https
 
 
