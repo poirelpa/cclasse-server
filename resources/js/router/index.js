@@ -6,26 +6,45 @@ import Register from "../components/Login.vue";
 import RecoverPassword from "../components/Login.vue";
 import NotFound from "../components/NotFound.vue";
 
+import store from '../store'
+
 const routes = [
     {
         path: "/",
         name: "Home",
         component: Home,
+        meta: {
+          guest:true,
+          auth:true
+        }
     },
     {
         path: "/login",
         name: "Login",
         component: Login,
+        alias:['/logout'],
+        meta: {
+          guest:true,
+          auth:true
+        }
     },
     {
         path: "/register",
         name: "Register",
         component: Register,
+        meta: {
+          guest:true,
+          auth:false
+        }
     },
     {
         path: "/recover-password",
         name: "RecoverPassword",
         component: RecoverPassword,
+        meta: {
+          guest:true,
+          auth:false
+        }
     },
     {
         path: "/class/:id(\\d+)",
@@ -34,30 +53,47 @@ const routes = [
         props:(route) => {
           const id = Number.parseInt(route.params.id, 10)
           return { id }
+        },
+        meta: {
+          guest:false,
+          auth:true
         }
     },
     {
         path: "/class/new",
         name: "NewClass",
         component: Class,
+        meta: {
+          guest:false,
+          auth:true
+        }
     },
     {
         path: "/:catchAll(.*)",
         component: NotFound,
+        meta: {
+          guest:true,
+          auth:true
+        }
     },
-  /*{
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" * / '../components/About.vue')
-  }*/
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  // Determine if the route requires authentication
+  let isConnected = store.state.user.isConnected;
+  if (to.matched.some(record => (!record.meta.guest && !isConnected)||((!record.meta.auth && isConnected)))) {
+    next({
+      name: "Login",
+      query: {redirect: to.fullPath}
+    });
+  } else {
+    next();
+  }
 });
 
 export default router;

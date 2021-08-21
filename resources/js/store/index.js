@@ -73,8 +73,11 @@ export default createStore({
         scope: "*"
       }).then(response => {
         if(credentials.remember){
-          //local storage
+          localStorage.setItem('access_token',response.data.access_token)
+          localStorage.setItem('expires_in',response.data.expires_in)
+          localStorage.setItem('refresh_token',response.data.refresh_token)
         }
+        window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.access_token;
         console.log(response)
         context.commit('setTokens',response.data)
       })

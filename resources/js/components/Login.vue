@@ -16,7 +16,7 @@
       </div>
       <hr class="my-2 md:min-w-full" />
       <span class="space-x-2 float-right">
-        <button type="submit" :disabled="clicked">Connexion</button>
+        <button type="submit" :disabled="buttonClicked">Connexion</button>
       </span>
       <router-link :to="{name:'Register'}" class="block text-sm">
         <i class="fas fa-user-plus"></i> Créer un compte
