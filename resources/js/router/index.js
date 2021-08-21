@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import Class from "../components/Class.vue";
 import Home from "../components/Home.vue";
 import Login from "../components/Login.vue";
+import Logout from "../components/Logout.vue";
 import Register from "../components/Login.vue";
 import RecoverPassword from "../components/Login.vue";
 import NotFound from "../components/NotFound.vue";
@@ -22,9 +23,17 @@ const routes = [
         path: "/login",
         name: "Login",
         component: Login,
-        alias:['/logout'],
         meta: {
           guest:true,
+          auth:false
+        }
+    },
+    {
+        path: "/logout",
+        name: "Logout",
+        component: Logout,
+        meta: {
+          guest:false,
           auth:true
         }
     },

@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import auth from './auth.js'
 
 // Create a new store instance.
 let indexById = function(arr) {
@@ -17,7 +18,7 @@ export default createStore({
     return {
       classes:{data:{},order:[],isLoaded:false},
       levels:{data:{},order:[],isLoaded:false},
-      user:{isConnected:false}
+      user:{isConnected:auth.useToken()}
     }
   },
   getters: {
@@ -63,24 +64,22 @@ export default createStore({
         .get('/api/v1/levels')
         .then(response => context.commit('setLevels',response.data.data))
     },
-    login(context, credentials) {
-      return axios.post('http://cclasse.test/oauth/token',{
-        grant_type: "password",
-        client_id: "2",
-        client_secret: "EEeXAjmAuUA5r93AJI2THCUdDil4WZkUwCll28uE",
-        username: credentials.email,
-        password: credentials.password,
-        scope: "*"
-      }).then(response => {
-        if(credentials.remember){
-          localStorage.setItem('access_token',response.data.access_token)
-          localStorage.setItem('expires_in',response.data.expires_in)
-          localStorage.setItem('refresh_token',response.data.refresh_token)
-        }
-        window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.access_token;
-        console.log(response)
-        context.commit('setTokens',response.data)
-      })
+    async loginWithCredentials(context, credentials) {
+      await auth.getToken(credentials)
+      context.commit('isLoggedIn')
+
+      let user = await auth.getUser()
+      user.isConnected = true
+      context.commit('setUser', user)
+    },
+    async loginWithToken(context){
+      auth.useToken()
+      let user = await auth.getUser()
+      context.commit('setUser', user)
+    },
+    logout(context){
+      auth.logout()
+      context.commit('setUser', {isConnected:false})
     }
   },
   mutations: {
@@ -103,9 +102,11 @@ export default createStore({
     setLevels(state, levels){
       state.levels = indexById(levels)
     },
-    setTokens(state, tokens){
-      state.user.token = tokens
+    isLoggedIn(state){
       state.user.isConnected = true
+    },
+    setUser(state, data){
+      state.user = data
     }
   }
 })

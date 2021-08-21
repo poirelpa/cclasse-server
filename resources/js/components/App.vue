@@ -18,8 +18,15 @@
           <router-link :to="{name:'Login'}" class="block">
             <i class="fas fa-sign-in-alt"></i> Connexion
           </router-link>
+        </li>
+        <li v-if="!isConnected">
           <router-link :to="{name:'Register'}" class="block">
             <i class="fas fa-user-plus"></i> Créer un compte
+          </router-link>
+        </li>
+        <li v-if="isConnected">
+          <router-link :to="{name:'Logout'}" class="block">
+            <i class="fas fa-sign-out-alt"></i> Déconnexion
           </router-link>
         </li>
       </ul>
