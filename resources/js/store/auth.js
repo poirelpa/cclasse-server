@@ -43,8 +43,8 @@ let getUser = function(){
   })
 }
 
-let resetPassword = function(email){
-  return axios.post('/api/v1/auth/resetPassword',{email:email}).then(response => {
+let resetPassword = function(data){
+  return axios.post('/api/v1/auth/resetPassword',data).then(response => {
     return response.data
   })
 }

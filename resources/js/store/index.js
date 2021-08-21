@@ -81,8 +81,8 @@ export default createStore({
       auth.logout()
       context.commit('setUser', {isConnected:false})
     },
-    resetPassword(context,{email}){
-      return auth.resetPassword(email)
+    resetPassword(context,data){
+      return auth.resetPassword(data)
     }
   },
   mutations: {

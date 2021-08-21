@@ -9,6 +9,7 @@ todo
 classes
 - gestion des erreurs techniques
 - validation des formulaires
+- évènements ? logs ?
 - accessibilité
 - tests unitaires api
 - tests unitaires store ?
