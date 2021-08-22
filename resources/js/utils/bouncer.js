@@ -5,10 +5,17 @@ import { mapState, mapGetters } from 'vuex'
 
 export default class Bouncer {
     constructor (user) {
-        if (!user) {
+      this.setUser(user)
+
+      return
+    }
+
+    setUser(user){
+        if (!user?.id) {
             this.id = null
             this.abilities = []
             this.roles = []
+            this.isGuest = true
 
             return
         }
@@ -28,6 +35,7 @@ export default class Bouncer {
         this.id = user.id
         this.roles = map(user.roles, role => pick(role, ['name', 'title']))
         this.abilities = map(user.abilities || [], abilityMapper)
+        this.isGuest = false
     }
 
   // Find the abilities that give the user permission to do the ability we are
@@ -35,6 +43,7 @@ export default class Bouncer {
   // then we return true.
   can (abilityName, entityType = null, entity = null) {
      // Filter abilities to only ones that might be relevant to the given ability name.
+     console.log(this)
      let abilities = this.abilities.filter((ability) => {
          if (abilityName === ability.name || ability.name === '*') {
              if (ability.entity_type === '*') {

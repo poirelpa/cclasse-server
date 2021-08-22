@@ -45,7 +45,8 @@
         this.message = ""
         try {
           let result = await this.$store.dispatch("auth/loginWithCredentials",{email:this.email, password:this.password, remember: this.remember})
-          this.$router.push({name:'Home'})
+          this.$router.push(this.$route.query.redirect ?? {name:'Home'})
+
         } catch(e) {
           this.buttonClicked = false
           if(e?.response?.data?.error == "invalid_grant") {

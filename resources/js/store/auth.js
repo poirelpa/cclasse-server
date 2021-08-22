@@ -15,7 +15,7 @@ export default {
     bouncer: (state) => new Bouncer(state.user),
     can: (state, getters) => getters.bouncer.can.bind(getters.bouncer),
     cannot: (state, getters) => getters.bouncer.cannot.bind(getters.bouncer),
-    isGuest: (state) => !state.user?.id,
+    isGuest: (state, getters) => getters.bouncer.isGuest,
     isA: (state, getters) => getters.bouncer.isA.bind(getters.bouncer),
     isNotA: (state, getters) => getters.bouncer.isNotA.bind(getters.bouncer)
   },
@@ -38,22 +38,26 @@ export default {
       }
 
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.access_token;
-          
-      context.commit('isLoggedIn')
 
-      let user = await axios.get('/api/v1/auth/current').then(response => response.data)
-      context.commit('setUser', user)
+      response = await axios.get('/api/v1/auth/current')
+      let user = response?.data?.data
 
-      user.isConnected = true
       context.commit('setUser', user)
+      context.getters.bouncer.setUser(context.state.user)
+
+      return user
     },
     async loginWithToken(context){
       let token = localStorage.getItem('access_token')
       if(token) {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
-        let user = await axios.get('/api/v1/auth/current').then(response => response.data)
+        let response = await axios.get('/api/v1/auth/current')
+        let user = response?.data?.data
+
         context.commit('setUser', user)
+        context.getters.bouncer.setUser(context.state.user)
+
         return user
       }
     },
@@ -63,7 +67,8 @@ export default {
       localStorage.removeItem('expires_in')
       localStorage.removeItem('refresh_token')
 
-      context.commit('setUser', {isConnected:false})
+      context.commit('setUser', {})
+      context.getters.bouncer.setUser({})
     },
     resetPassword(context,data){
       return axios.post('/api/v1/auth/resetPassword',data).then(response => response.data)
@@ -73,9 +78,6 @@ export default {
     }
   },
   mutations: {
-    isLoggedIn(state){
-      state.user.isConnected = true
-    },
     setUser(state, data){
       state.user = data
     }

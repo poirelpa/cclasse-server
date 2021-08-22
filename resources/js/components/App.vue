@@ -14,23 +14,23 @@
             <i class="fas fa-home"></i> Accueil
           </router-link>
         </li>
-        <li v-if="!isConnected">
+        <li v-if="$isGuest">
           <router-link :to="{name:'Login'}" class="block">
             <i class="fas fa-sign-in-alt"></i> Connexion
           </router-link>
         </li>
-        <li v-if="!isConnected">
+        <li v-if="$isGuest">
           <router-link :to="{name:'Register'}" class="block">
             <i class="fas fa-user-plus"></i> Créer un compte
           </router-link>
         </li>
-        <li v-if="isConnected">
+        <li v-if="!$isGuest">
           <router-link :to="{name:'Logout'}" class="block">
             <i class="fas fa-sign-out-alt"></i> Déconnexion
           </router-link>
         </li>
       </ul>
-      <div v-if="isConnected">
+      <div v-if="!$isGuest">
         <!-- Divider -->
         <hr class="my-2 md:min-w-full" />
         <!-- Classes -->
@@ -60,7 +60,7 @@
   export default {
     components:{SideBar, Classes},
     computed: {
-      isConnected() { return this.$store.state.auth.user.isConnected },
+      //isConnected() { return this.$store.state.auth.user.isConnected },
     },
     mixins: [Bouncer.mixin]
   }

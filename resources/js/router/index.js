@@ -17,47 +17,30 @@ const routes = [
     {
         path: "/",
         name: "Home",
-        component: Home,
-        meta: {
-          guest:true,
-          auth:true
-        }
+        component: Home
     },
     {
         path: "/login",
         name: "Login",
         component: Login,
-        meta: {
-          guest:true,
-          auth:false
-        }
     },
     {
         path: "/logout",
         name: "Logout",
         component: Logout,
         meta: {
-          guest:false,
-          auth:true
+          roles: ['admin', 'user']
         }
     },
     {
         path: "/register",
         name: "Register",
         component: Register,
-        meta: {
-          guest:true,
-          auth:false
-        }
     },
     {
         path: "/reset-password",
         name: "ResetPassword",
         component: ResetPassword,
-        meta: {
-          guest:true,
-          auth:false
-        }
     },
     {
         path: "/class/:id(\\d+)",
@@ -68,8 +51,9 @@ const routes = [
           return { id }
         },
         meta: {
-          guest:false,
-          auth:true
+          permissions (bouncer, to, from) {
+            return bouncer.can('view', 'class',to.params.id)
+          }
         }
     },
     {
@@ -77,17 +61,14 @@ const routes = [
         name: "NewClass",
         component: Class,
         meta: {
-          guest:false,
-          auth:true
+          permissions (bouncer, to, from) {
+            return bouncer.can('create', 'class')
+          }
         }
     },
     {
         path: "/:catchAll(.*)",
         component: NotFound,
-        meta: {
-          guest:true,
-          auth:true
-        }
     },
 ];
 
@@ -100,28 +81,29 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const bouncer = store.getters['auth/bouncer']
+    let redirect = function(next,to){
 
+        if(bouncer.isGuest) {
+          next({
+            name: "Login",
+            query: {redirect: to.fullPath}
+          });
+        } else {
+          // TODO
+          // Push notification to inform user they do not have permission
+          console.error('TODO : remplacer par une notification. Accès refusé.',to,bouncer)
+          // redirect to a universal page they will have access to
+          next({ name: 'Home', replace: true })
+        }
+    }
     if (_.has(to.meta, 'permissions') || _.has(to.meta, 'roles')) {
         if (typeof to.meta.permissions === 'function') {
             if (!to.meta.permissions(bouncer, to, from)) {
-              if(isGuest()) {
-                next({
-                  name: "Login",
-                  query: {redirect: to.fullPath}
-                });
-              } else {
-                // TODO
-                // Push notification to inform user they do not have permission
-                console.error('TODO : remplacer par une notification. Accès refusé.')
-                // redirect to a universal page they will have access to
-                next({ name: 'home', replace: true })
-              }
+              redirect(next,to)
+              return
             }
         } else if ((_.has(to.meta, 'permissions') && bouncer.cannot(to.meta.permissions)) || (_.has(to.meta, 'roles') && bouncer.isNotA(to.meta.roles))) {
-            // Push notification to inform user they do not have permission
-
-            // redirect to a universal page they will have access to
-            next({ name: 'home', replace: true })
+            redirect(next,to)
 
             return
         }

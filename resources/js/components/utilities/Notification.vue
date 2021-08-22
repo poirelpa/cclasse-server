@@ -17,7 +17,6 @@
     },
     watch:{
       message:function(newv,oldv){
-        console.log('-'+oldv+'-'+newv+'-')
         this.closed = false
       }
     },

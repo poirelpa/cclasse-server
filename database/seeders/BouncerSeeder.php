@@ -29,6 +29,7 @@ class BouncerSeeder extends Seeder
         Bouncer::allow('admin')->everything();
 
         Bouncer::allow('user')->toOwn(ClassModel::class);
+        Bouncer::allow('user')->to('create', ClassModel::class);
 
     }
 }
