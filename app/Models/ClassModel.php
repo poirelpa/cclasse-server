@@ -17,7 +17,7 @@ class ClassModel extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['name', 'year'];
+    protected $fillable = ['name', 'year', 'user_id'];
 
     public function levels()
     {

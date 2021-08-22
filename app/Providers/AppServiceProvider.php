@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         // spatie/laravel-morph-map-generator
         Relation::morphMap([
             'user' => 'App\Models\Post',
-            'role' => 'App\Models\Video',
+            'role' => 'App\Models\Role',
         ]);
     }
 }

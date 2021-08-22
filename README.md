@@ -2,9 +2,9 @@
 
 todo
 
-classes
-- restreindre par personne
-- gestion des erreurs et validation des formulaires
+classes : gestion des erreurs et validation des formulaires
+
+scope bouncer : gérer les forbidden et autres cas tordus
 
 programmation / progression
 

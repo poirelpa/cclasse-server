@@ -15,7 +15,7 @@ class ClassController extends Controller
      */
     public function index()
     {
-        return ClassResource::collection(ClassModel::all());
+        return ClassResource::collection(ClassModel::whereCan(auth()->id(),'read','class')->get());
     }
 
     /**
@@ -26,7 +26,9 @@ class ClassController extends Controller
      */
     public function store(Request $request)
     {
-        $class = ClassModel::create($request->all());
+        $params = $request->all();
+        $params['user_id'] = auth()->user()->id;
+        $class = ClassModel::create($params);
         $class->levels()->attach($request->input('levels'));
         return new ClassResource($class->fresh('levels'));
     }
