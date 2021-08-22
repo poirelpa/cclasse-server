@@ -12,8 +12,8 @@
         <label for="password" class=""><h2>Mot de passe :</h2></label>
         <input type="password" v-model="password" id="password" class="w-full" minlength="8" required/>
 
-        <label for="passwordVerif" class="">Confirmation :</label>
-        <input type="password" v-model="passwordVerif" id="passwordVerif" class="w-full" required/>
+        <label for="passwordConfirm" class="">Confirmation :</label>
+        <input type="password" v-model="passwordConfirm" id="passwordConfirm" class="w-full" required ref="passwordConfirm" @change="verifConfirm"/>
       </div>
 
       <span class="space-x-2 float-right">
@@ -29,19 +29,19 @@
         email:"",
         name:"",
         password:"",
-        passwordVerif:"",
+        passwordConfirm:"",
         buttonClicked:false,
         message:""
       }
     },
     methods: {
+      verifConfirm(){
+        this.$refs.passwordConfirm.setCustomValidity(
+          this.password == this.passwordConfirm ? "" : "Confirmation du mot de passe incorrecte.")
+      },
       async register(){
-        this.message = ""
-        if(this.password != this.passwordVerif) {
-          this.message = "Confirmation du mot de passe incorrecte"
-          return
-        }
         this.buttonClicked = true
+        this.message = ""
         try{
           let response = await this.$store.dispatch("register",{email:this.email, name:this.name, password:this.password})
           if(response.message) {
@@ -49,6 +49,7 @@
             if(response.status){
               let result = await this.$store.dispatch("loginWithCredentials",{email:this.email, password:this.password})
               this.$router.push({name:'Home'})
+              return
             }
           }
           this.$router.push({name:'Home'})

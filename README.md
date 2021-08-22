@@ -2,26 +2,30 @@
 
 todo
 
-- oauth
-
+- responsive forms
+- extract password confirm to component
 - gestion propre du versionning API
 
 classes
-- gestion des erreurs techniques
-- validation des formulaires
-- évènements ? logs ?
-- accessibilité
-- tests unitaires api
-- tests unitaires store ?
+- gestion des erreurs et validation des formulaires
 
 programmation / progression
+
+- tests unitaires api
+- tests unitaires store ?
 emploi du temps
 cahier-journal
 
+- évènements ? logs ?
 
+
+- accessibilité
 
 - https
-
+- identity provider (fb ?)
+- delete profile
+- extract all profile data
+- validation de l'adresse mail
 
 v1
 

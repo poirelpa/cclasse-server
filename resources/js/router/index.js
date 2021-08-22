@@ -1,13 +1,17 @@
 import { createWebHistory, createRouter } from "vue-router";
-import Class from "../components/Class.vue";
+import store from '../store'
+
 import Home from "../components/Home.vue";
-import Login from "../components/Login.vue";
-import Logout from "../components/Logout.vue";
-import Register from "../components/Register.vue";
-import ResetPassword from "../components/ResetPassword.vue";
+
+import Login from "../components/auth/Login.vue";
+import Logout from "../components/auth/Logout.vue";
+import Register from "../components/auth/Register.vue";
+import ResetPassword from "../components/auth/ResetPassword.vue";
+
+import Class from "../components/classes/Class.vue";
+
 import NotFound from "../components/NotFound.vue";
 
-import store from '../store'
 
 const routes = [
     {

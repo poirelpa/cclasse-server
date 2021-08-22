@@ -53,8 +53,8 @@
 </style>
 
 <script>
-  import SideBar from "./SideBar.vue";
-  import Classes from "./Classes.vue";
+  import SideBar from "./utilities/SideBar.vue";
+  import Classes from "./classes/Classes.vue";
   export default {
     components:{SideBar, Classes},
     computed: {

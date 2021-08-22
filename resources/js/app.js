@@ -3,9 +3,9 @@ require('./bootstrap');
 
 import { createApp } from 'vue';
 import App from './components/App.vue'
-import Debug from './components/Debug.vue'
-import Loading from './components/Loading.vue'
-import Notification from './components/Notification.vue'
+import Debug from './components/utilities/Debug.vue'
+import Loading from './components/utilities/Loading.vue'
+import Notification from './components/utilities/Notification.vue'
 import router from './router'
 import store from './store'
 
