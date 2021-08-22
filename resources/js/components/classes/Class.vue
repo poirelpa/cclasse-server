@@ -8,7 +8,7 @@
         </h1>
         <div>
           <label for="year" class=""><h2>Année :</h2></label>
-          <input type="number" v-model="year" id="year" class="w-16 m-0"/> / {{year+1}}
+          <input type="number" v-model="year" id="year" class="w-20 m-0"/> / {{year+1}}
         </div>
 
         <h2 v-if="Object.keys(levels).length">Niveau(x) :</h2>

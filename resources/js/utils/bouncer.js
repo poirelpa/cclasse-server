@@ -43,7 +43,6 @@ export default class Bouncer {
   // then we return true.
   can (abilityName, entityType = null, entity = null) {
      // Filter abilities to only ones that might be relevant to the given ability name.
-     console.log(this)
      let abilities = this.abilities.filter((ability) => {
          if (abilityName === ability.name || ability.name === '*') {
              if (ability.entity_type === '*') {
