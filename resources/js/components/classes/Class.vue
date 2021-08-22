@@ -51,10 +51,10 @@
     },
     computed: {
       isNew() { return Number.isNaN(this.id) },
-      isLoaded() { return this.$store.state.classes.isLoaded && this.$store.state.levels.isLoaded },
-      levels() { return this.$store.getters.levels },
-      name() { return printYear(this.year) + (this.checkedLevels.length ? ' (' + this.checkedLevels.sort().map(id=>this.$store.getters.levelsById[id]?.name).join(' ') + ')': '')},
-      storeClass() { return this.$store.getters.classesById[this.id] ?? {}},
+      isLoaded() { return this.$store.state.classes.classes.isLoaded && this.$store.state.classes.levels.isLoaded },
+      levels() { return this.$store.getters['classes/levels'] },
+      name() { return printYear(this.year) + (this.checkedLevels.length ? ' (' + this.checkedLevels.sort().map(id=>this.$store.getters['classes/levelsById'][id]?.name).join(' ') + ')': '')},
+      storeClass() { return this.$store.getters['classes/classesById'][this.id] ?? {}},
       storeYear() { return this.storeClass.year ?? new Date().getFullYear()},
       storeCheckedLevels() { return this.storeClass.levels?.map(l=>l.id) ?? []}
     },
@@ -70,24 +70,24 @@
       async save(){
         this.buttonClicked = true
         if(this.isNew){
-          let cl = await this.$store.dispatch("createClass",{name:this.name, year:this.year, levels:this.checkedLevels})
+          let cl = await this.$store.dispatch("classes/createClass",{name:this.name, year:this.year, levels:this.checkedLevels})
           this.$router.push({name:'Class',params:{id:cl.id}})
         } else {
-          await this.$store.dispatch("updateClass",Object.assign({},this.storeClass,{name:this.name, year:this.year, levels:this.checkedLevels}))
+          await this.$store.dispatch("classes/updateClass",Object.assign({},this.storeClass,{name:this.name, year:this.year, levels:this.checkedLevels}))
         }
         this.buttonClicked = false
       },
       async deleteClass(){
         if(confirm("Veuillez confirmer la suppression")){
           this.buttonClicked = true
-          await this.$store.dispatch("deleteClass",this.storeClass)
+          await this.$store.dispatch("classes/deleteClass",this.storeClass)
           this.$router.push({name:'Home'})
         }
       },
       initDataFromStore(){
         if(!this.isNew
-          && this.$store.state.classes.isLoaded
-          && this.$store.getters.classesById[this.id]==undefined){
+          && this.$store.state.classes.classes.isLoaded
+          && this.$store.getters['classes/classesById'][this.id]==undefined){
           this.$router.push('/missing')
         }
 
@@ -96,7 +96,7 @@
       }
     },
     created() {
-      this.$store.dispatch("getLevels")
+      this.$store.dispatch("classes/getLevels")
     },
     mounted() {
       this.initDataFromStore()

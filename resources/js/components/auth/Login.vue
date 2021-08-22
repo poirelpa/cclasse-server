@@ -44,15 +44,17 @@
         this.buttonClicked = true
         this.message = ""
         try {
-          let result = await this.$store.dispatch("loginWithCredentials",{email:this.email, password:this.password, remember: this.remember})
+          let result = await this.$store.dispatch("auth/loginWithCredentials",{email:this.email, password:this.password, remember: this.remember})
           this.$router.push({name:'Home'})
         } catch(e) {
           this.buttonClicked = false
           if(e?.response?.data?.error == "invalid_grant") {
             this.message = "Identifiants incorrects"
           } else if(e?.response?.data?.error) {
+            console.error(e)
             this.message = `Erreur d'API non répertoriée : ${e.response.data.error}`
           } else {
+            console.error(e)
             this.message = `Exception non répertoriée : ${e.message}`
           }
         }

@@ -55,10 +55,13 @@
 <script>
   import SideBar from "./utilities/SideBar.vue";
   import Classes from "./classes/Classes.vue";
+  import Bouncer from '../utils/bouncer.js'
+
   export default {
     components:{SideBar, Classes},
     computed: {
-      isConnected() { return this.$store.state.user.isConnected },
+      isConnected() { return this.$store.state.auth.user.isConnected },
     },
+    mixins: [Bouncer.mixin]
   }
 </script>

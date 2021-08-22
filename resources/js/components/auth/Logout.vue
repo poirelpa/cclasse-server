@@ -8,7 +8,7 @@
 <script>
   export default {
     async mounted(){
-      await this.$store.dispatch("logout")
+      await this.$store.dispatch("auth/logout")
       this.$router.push({name:'Login'})
     }
   }

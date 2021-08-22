@@ -17,11 +17,11 @@
 <script>
   export default {
     computed: {
-      classes() { return this.$store.getters.classes },
-      isLoaded() { return this.$store.state.classes.isLoaded }
+      classes() { return this.$store.getters['classes/classes'] },
+      isLoaded() { return this.$store.state.classes.classes.isLoaded }
     },
     created() {
-      this.$store.dispatch("getClasses")
+      this.$store.dispatch("classes/getClasses")
     }
   }
 </script>

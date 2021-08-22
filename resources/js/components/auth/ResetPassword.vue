@@ -50,7 +50,7 @@
         this.buttonClicked = true
 
         try{
-          let result = await this.$store.dispatch("resetPassword",{email:this.email, token:this.token, password:this.password})
+          let result = await this.$store.dispatch("auth/resetPassword",{email:this.email, token:this.token, password:this.password})
           if(this.step == 1){
             this.step = 2
             this.buttonClicked = false

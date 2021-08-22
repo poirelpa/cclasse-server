@@ -96,17 +96,40 @@ const router = createRouter({
   routes,
 });
 
+
+
 router.beforeEach((to, from, next) => {
-  // Determine if the route requires authentication
-  let isConnected = store.state.user.isConnected;
-  if (to.matched.some(record => (!record.meta.guest && !isConnected)||((!record.meta.auth && isConnected)))) {
-    next({
-      name: "Login",
-      query: {redirect: to.fullPath}
-    });
-  } else {
-    next();
-  }
-});
+    const bouncer = store.getters['auth/bouncer']
+
+    if (_.has(to.meta, 'permissions') || _.has(to.meta, 'roles')) {
+        if (typeof to.meta.permissions === 'function') {
+            if (!to.meta.permissions(bouncer, to, from)) {
+              if(isGuest()) {
+                next({
+                  name: "Login",
+                  query: {redirect: to.fullPath}
+                });
+              } else {
+                // TODO
+                // Push notification to inform user they do not have permission
+                console.error('TODO : remplacer par une notification. Accès refusé.')
+                // redirect to a universal page they will have access to
+                next({ name: 'home', replace: true })
+              }
+            }
+        } else if ((_.has(to.meta, 'permissions') && bouncer.cannot(to.meta.permissions)) || (_.has(to.meta, 'roles') && bouncer.isNotA(to.meta.roles))) {
+            // Push notification to inform user they do not have permission
+
+            // redirect to a universal page they will have access to
+            next({ name: 'home', replace: true })
+
+            return
+        }
+    }
+
+    // they either have permissions or no permissions are required so continue on
+    // to the intended route
+    next()
+})
 
 export default router;

@@ -43,11 +43,11 @@
         this.buttonClicked = true
         this.message = ""
         try{
-          let response = await this.$store.dispatch("register",{email:this.email, name:this.name, password:this.password})
+          let response = await this.$store.dispatch("auth/register",{email:this.email, name:this.name, password:this.password})
           if(response.message) {
             this.message = response.message
             if(response.status){
-              let result = await this.$store.dispatch("loginWithCredentials",{email:this.email, password:this.password})
+              let result = await this.$store.dispatch("auth/loginWithCredentials",{email:this.email, password:this.password})
               this.$router.push({name:'Home'})
               return
             }
