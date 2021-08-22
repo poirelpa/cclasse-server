@@ -19,19 +19,17 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('v1/auth/current', [AuthController::class,'current'])
-    ->middleware('auth:api');
-Route::post('v1/auth/resetPassword', [AuthController::class,'resetPassword']);
-Route::post('v1/auth/register', [AuthController::class,'register']);
+Route::prefix('v1')->group(function(){
 
+    Route::post('auth/resetPassword', [AuthController::class,'resetPassword']);
+    Route::post('auth/register', [AuthController::class,'register']);
 
-Route::apiResource('/v1/classes', ClassController::class)
-    ->middleware('auth:api');
-Route::apiResource('/v1/users', UserController::class)
-    ->middleware('auth:api');
-Route::apiResource('/v1/classes', ClassController::class)
-    ->middleware('auth:api');
-Route::get('/v1/classes/{class}/levels', [ClassController::class, 'getLevels'])
-    ->middleware('auth:api');
-Route::get('/v1/levels', [LevelController::class, 'index'])
-    ->middleware('auth:api');
+    Route::middleware(['auth:api'])->group(function () {
+        Route::get('auth/current', [AuthController::class,'current']);
+        Route::apiResource('/classes', ClassController::class);
+        Route::apiResource('/users', UserController::class);
+        Route::apiResource('/classes', ClassController::class);
+        Route::get('/classes/{class}/levels', [ClassController::class, 'getLevels']);
+        Route::get('/levels', [LevelController::class, 'index']);
+    });
+});

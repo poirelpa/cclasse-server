@@ -2,11 +2,8 @@
 
 todo
 
-- responsive forms
-- extract password confirm to component
-- gestion propre du versionning API
-
 classes
+- restreindre par personne
 - gestion des erreurs et validation des formulaires
 
 programmation / progression
