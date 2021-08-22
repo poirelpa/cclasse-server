@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // other classes morphmap generated via plugin
+        // spatie/laravel-morph-map-generator
+        Relation::morphMap([
+            'user' => 'App\Models\Post',
+            'role' => 'App\Models\Video',
+        ]);
     }
 }

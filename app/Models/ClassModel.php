@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
-class ClassModel extends Model
+class ClassModel extends BaseModel
 {
     use HasFactory;
 
@@ -29,5 +29,11 @@ class ClassModel extends Model
         static::addGlobalScope('order', function (Builder $builder) {
             $builder->orderByDesc('updated_at');
         });
+    }
+
+
+    public function getMorphClass()
+    {
+        return 'class';
     }
 }

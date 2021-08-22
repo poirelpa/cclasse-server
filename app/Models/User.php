@@ -47,7 +47,7 @@ class User extends Authenticatable
 
     public function classes()
     {
-        return $this->belongsToMany(ClassModel::class, 'classes_users', 'user_id', 'class_id');
+        return $this->hasMany(ClassModel::class);
     }
 
 
@@ -59,5 +59,28 @@ class User extends Authenticatable
      */
     public function sendPasswordResetNotification($token){
         $this->notify(new APIResetPasswordNotification($token));
+    }
+
+    /**
+     * Return all the user's abilities and if they have explicitly been
+     * forbidden from having an ability, then we return with a forbidden flag
+     * set to true. Unfortunately bouncer doesn't have a method for returning
+     * all abilities, forbidden or not
+     * https://www.codium.com.au/blog/using-bouncer-with-laravel-and-vuejs
+     */
+    public function getUserAbilities()
+    {
+        $abilities = $this->getAbilities()->merge($this->getForbiddenAbilities());
+
+        $abilities->each(function ($ability) {
+            $ability->forbidden = $this->getForbiddenAbilities()->contains($ability);
+        });
+
+        return $abilities;
+    }
+
+    public function getMorphClass()
+    {
+        return 'user';
     }
 }

@@ -14,6 +14,8 @@ class LevelSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('levels')->delete();
+
         DB::table('levels')->insert([[
             'name' => 'PS',
             'order_index' => 3,

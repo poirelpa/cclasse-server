@@ -13,7 +13,8 @@
         "laravel/passport": "^10.1",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.6",
-        "silber/bouncer": "v1.0.0-rc.10"
+        "silber/bouncer": "v1.0.0-rc.10",
+        "spatie/laravel-morph-map-generator": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

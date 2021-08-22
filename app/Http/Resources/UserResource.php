@@ -21,6 +21,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'classes' => ClassResource::collection($this->classes),
+            'abilities' => $this->getUserAbilities(),
             '_links' => [
                 'self' => action([UserController::class, 'show'], $this),
             ]

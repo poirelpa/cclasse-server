@@ -3,8 +3,8 @@ import axios from 'axios'
 let getToken = async function(credentials){
   let response = await axios.post('/oauth/token',{
     grant_type: "password",
-    client_id: "2",
-    client_secret: "EEeXAjmAuUA5r93AJI2THCUdDil4WZkUwCll28uE",
+    client_id: "1",
+    client_secret: "Gl4z1uob1D1spvWZ7llFTh5orQUSF5HvzN9LunKO",
     username: credentials.email,
     password: credentials.password,
     scope: "*"
