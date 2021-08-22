@@ -12,7 +12,8 @@
         "laravel/framework": "^8.54",
         "laravel/passport": "^10.1",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.6"
+        "laravel/tinker": "^2.6",
+        "silber/bouncer": "v1.0.0-rc.10"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

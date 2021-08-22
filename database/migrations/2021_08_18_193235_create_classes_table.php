@@ -17,6 +17,7 @@ class CreateClassesTable extends Migration
             $table->id();
             $table->string('name');
             $table->smallInteger('year')->unsigned();
+            $table->foreignid('user_id')->constrained('users');
             $table->timestamps();
         });
     }

@@ -26,7 +26,6 @@ Route::prefix('v1')->group(function(){
 
     Route::middleware(['auth:api'])->group(function () {
         Route::get('auth/current', [AuthController::class,'current']);
-        Route::apiResource('/classes', ClassController::class);
         Route::apiResource('/users', UserController::class);
         Route::apiResource('/classes', ClassController::class);
         Route::get('/classes/{class}/levels', [ClassController::class, 'getLevels']);
