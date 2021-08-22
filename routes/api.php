@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +22,12 @@ use App\Http\Controllers\AuthController;
 Route::get('v1/auth/current', [AuthController::class,'current'])
     ->middleware('auth:api');
 Route::post('v1/auth/resetPassword', [AuthController::class,'resetPassword']);
+Route::post('v1/auth/register', [AuthController::class,'register']);
 
 
 Route::apiResource('/v1/classes', ClassController::class)
+    ->middleware('auth:api');
+Route::apiResource('/v1/users', UserController::class)
     ->middleware('auth:api');
 Route::apiResource('/v1/classes', ClassController::class)
     ->middleware('auth:api');

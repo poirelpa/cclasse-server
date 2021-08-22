@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserModel;
+use App\Models\User;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -49,5 +49,20 @@ class AuthController extends Controller
             }
         }
         return response()->json(['message' => __($status), 'status' => true], 201);
+    }
+
+    public function register(Request $request){
+        $request->validate([
+            'email' => 'required|email|unique:users',
+            'name' => 'required|min:3',
+            'password' => 'required|min:8'
+        ]);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ]);
+        return response()->json(['message' => "Compte créé.", 'status' => true, 'user' => $user], 201);
+
     }
 }

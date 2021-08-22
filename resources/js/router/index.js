@@ -3,7 +3,7 @@ import Class from "../components/Class.vue";
 import Home from "../components/Home.vue";
 import Login from "../components/Login.vue";
 import Logout from "../components/Logout.vue";
-import Register from "../components/Login.vue";
+import Register from "../components/Register.vue";
 import ResetPassword from "../components/ResetPassword.vue";
 import NotFound from "../components/NotFound.vue";
 

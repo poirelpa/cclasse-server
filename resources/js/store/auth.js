@@ -38,15 +38,15 @@ let logout = function(){
 }
 
 let getUser = function(){
-  return axios.get('/api/v1/auth/current').then(response => {
-    return response.data
-  })
+  return axios.get('/api/v1/auth/current').then(response => response.data)
 }
 
 let resetPassword = function(data){
-  return axios.post('/api/v1/auth/resetPassword',data).then(response => {
-    return response.data
-  })
+  return axios.post('/api/v1/auth/resetPassword',data).then(response => response.data)
 }
 
-export default {getToken, useToken, logout, getUser, resetPassword}
+let register = function(data){
+  return axios.post('/api/v1/auth/register',data).then(response => response.data)
+}
+
+export default {getToken, useToken, logout, getUser, resetPassword, register}

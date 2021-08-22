@@ -27,3 +27,6 @@ window.axios.defaults.headers.common['Accept'] = 'application/json';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+
+window.sleep = time => new Promise(res=>setTimeout(()=>res(),time));

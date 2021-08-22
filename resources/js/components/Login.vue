@@ -1,13 +1,14 @@
 <template>
     <form @submit.prevent="login" class="bg-white shadow rounded p-4 mx-auto max-w-2xl flex-grow">
+      <notification :message="message"/>
       <h1>Connexion</h1>
       <div>
         <label for="email" class=""><h2>Email :</h2></label>
-        <input type="email" v-model="email" id="email" class="w-full"/>
+        <input type="email" v-model="email" id="email" required class="w-full"/>
       </div>
       <div>
         <label for="password" class=""><h2>Mot de passe :</h2></label>
-        <input type="password" v-model="password" id="password" class="w-full"/>
+        <input type="password" v-model="password" id="password" required class="w-full"/>
       </div>
 
       <div>
@@ -34,14 +35,27 @@
         email:"",
         password:"",
         remember:false,
-        buttonClicked:false
+        buttonClicked:false,
+        message:""
       }
     },
     methods: {
       async login(){
         this.buttonClicked = true
-        await this.$store.dispatch("loginWithCredentials",{email:this.email, password:this.password, remember: this.remember})
-        this.$router.push({name:'Home'})
+        this.message = ""
+        try {
+          let result = await this.$store.dispatch("loginWithCredentials",{email:this.email, password:this.password, remember: this.remember})
+          this.$router.push({name:'Home'})
+        } catch(e) {
+          this.buttonClicked = false
+          if(e?.response?.data?.error == "invalid_grant") {
+            this.message = "Identifiants incorrects"
+          } else if(e?.response?.data?.error) {
+            this.message = `Erreur d'API non répertoriée : ${e.response.data.error}`
+          } else {
+            this.message = `Exception non répertoriée : ${e.message}`
+          }
+        }
       }
     }
   }

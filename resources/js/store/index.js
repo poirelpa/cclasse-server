@@ -43,7 +43,6 @@ export default createStore({
       })
     },
     updateClass(context, cl){
-      console.log('up',cl)
       return axios
       .put(cl._links.self, cl)
       .then(response => {
@@ -83,6 +82,9 @@ export default createStore({
     },
     resetPassword(context,data){
       return auth.resetPassword(data)
+    },
+    register(context,data){
+      return auth.register(data)
     }
   },
   mutations: {
