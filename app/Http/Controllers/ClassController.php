@@ -15,7 +15,7 @@ class ClassController extends Controller
      */
     public function index()
     {
-        return ClassResource::collection(ClassModel::whereCan(auth()->id(),'read','class')->get());
+        return ClassResource::collection(ClassModel::whereCan('read')->get());
     }
 
     /**

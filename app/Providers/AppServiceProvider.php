@@ -27,8 +27,6 @@ class AppServiceProvider extends ServiceProvider
         // other classes morphmap generated via plugin
         // spatie/laravel-morph-map-generator
         Relation::morphMap([
-            'user' => 'App\Models\Post',
-            'role' => 'App\Models\Role',
         ]);
     }
 }

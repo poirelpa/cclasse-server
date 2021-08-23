@@ -68,6 +68,7 @@ export default {
       localStorage.removeItem('refresh_token')
 
       context.commit('setUser', {})
+      context.dispatch('classes/clearClasses',null,{root:true})
       context.getters.bouncer.setUser({})
     },
     resetPassword(context,data){

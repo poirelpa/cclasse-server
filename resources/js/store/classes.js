@@ -46,6 +46,9 @@ export default {
           context.commit('deleteClass',cl.id)
         })
       },
+      clearClasses(context, cl){
+        context.commit('setClasses',null)
+      },
       getLevels(context) {
         if(context.state.levels.isLoaded) return
         return axios

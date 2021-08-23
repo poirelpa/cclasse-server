@@ -23,6 +23,10 @@ class ClassModel extends BaseModel
     {
         return $this->belongsToMany(Level::class, 'classes_levels', 'class_id');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     protected static function booted()
     {
