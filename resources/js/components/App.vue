@@ -43,7 +43,10 @@
         <classes/>
       </div>
     </side-bar>
-    <div class="relative md:ml-64 bg-gray-50 p-3 min-h-screen flex items-center justify-center  ">
+    <div class="relative md:ml-64 bg-gray-50 p-3">
+      <notification :message="notification" />
+    </div>
+    <div class="relative md:ml-o64 bg-gray-50 p-3 min-h-screen flex items-center justify-center  ">
       <router-view/>
     </div>
   </div>
@@ -56,12 +59,13 @@
   import SideBar from "./utilities/SideBar.vue";
   import Classes from "./classes/Classes.vue";
   import Bouncer from '../utils/bouncer.js'
+  import {mapState} from 'vuex'
 
   export default {
     components:{SideBar, Classes},
-    computed: {
-      //isConnected() { return this.$store.state.auth.user.isConnected },
-    },
-    mixins: [Bouncer.mixin]
+    computed: mapState(['notification']),
+    mixins: [
+      Bouncer.mixin
+    ]
   }
 </script>

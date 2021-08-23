@@ -1,33 +1,26 @@
 import { createWebHistory, createRouter } from "vue-router";
 import store from '../store'
 
-import Home from "../components/Home.vue";
-
-import Login from "../components/auth/Login.vue";
-import Logout from "../components/auth/Logout.vue";
-import Register from "../components/auth/Register.vue";
-import ResetPassword from "../components/auth/ResetPassword.vue";
 
 import Class from "../components/classes/Class.vue";
 
-import NotFound from "../components/NotFound.vue";
 
 
 const routes = [
     {
         path: "/",
         name: "Home",
-        component: Home
+        component: () => import ("../components/Home.vue")
     },
     {
         path: "/login",
         name: "Login",
-        component: Login,
+        component: () => import ("../components/auth/Login.vue")
     },
     {
         path: "/logout",
         name: "Logout",
-        component: Logout,
+        component: () => import ("../components/auth/Logout.vue"),
         meta: {
           roles: ['admin', 'user']
         }
@@ -35,12 +28,12 @@ const routes = [
     {
         path: "/register",
         name: "Register",
-        component: Register,
+        component: () => import ("../components/auth/Register.vue"),
     },
     {
         path: "/reset-password",
         name: "ResetPassword",
-        component: ResetPassword,
+        component: () => import ("../components/auth/ResetPassword.vue"),
     },
     {
         path: "/class/:id(\\d+)",
@@ -70,7 +63,7 @@ const routes = [
     },
     {
         path: "/:catchAll(.*)",
-        component: NotFound,
+        component: () => import ("../components/NotFound.vue"),
     },
 ];
 
@@ -91,9 +84,8 @@ router.beforeEach((to, from, next) => {
             query: {redirect: to.fullPath}
           });
         } else {
-          // TODO
-          // Push notification to inform user they do not have permission
-          console.error('TODO : remplacer par une notification. Accès refusé.',to,bouncer)
+          store.dispatch('notify','Accès refusé.')
+          console.error('Accès refusé.', to)
           // redirect to a universal page they will have access to
           next({ name: 'Home', replace: true })
         }

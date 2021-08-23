@@ -15,6 +15,6 @@ export default {
   },
   ordered(obj){
     return obj.order.map(order=>obj.data[order])
-  }
-
+  },
+  sleep(ms){return new Promise(resolve => setTimeout(resolve, ms))}
 }
