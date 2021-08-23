@@ -19,9 +19,6 @@
     computed: {
       classes() { return this.$store.getters['classes/classes'] },
       isLoaded() { return this.$store.state.classes.classes.isLoaded }
-    },
-    created() {
-      this.$store.dispatch("classes/getClasses")
     }
   }
 </script>

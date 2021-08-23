@@ -1,5 +1,6 @@
 
 import utils from '../utils/utils.js'
+import api from '../utils/api.js'
 
 export default {
   namespaced: true,
@@ -19,20 +20,20 @@ export default {
     actions: {
       getClasses(context){
         if(context.state.classes.isLoaded) return
-        return axios
-          .get('/api/v1/classes')
+        return api
+          .get('/classes')
           .then(response => (context.commit('setClasses',response.data.data)))
       },
       createClass(context, cl){
-        return axios
-        .post('/api/v1/classes', cl)
+        return api
+        .post('/classes', cl)
         .then(response => {
           context.commit('addClass',response.data.data)
           return response.data.data
         })
       },
       updateClass(context, cl){
-        return axios
+        return api
         .put(cl._links.self, cl)
         .then(response => {
           context.commit('updateClass',response.data.data)
@@ -40,7 +41,7 @@ export default {
         })
       },
       deleteClass(context, cl){
-        return axios
+        return api
         .delete(cl._links.self)
         .then(response => {
           context.commit('deleteClass',cl.id)
@@ -51,8 +52,8 @@ export default {
       },
       getLevels(context) {
         if(context.state.levels.isLoaded) return
-        return axios
-          .get('/api/v1/levels')
+        return api
+          .get('/levels')
           .then(response => context.commit('setLevels',response.data.data))
       },
     },

@@ -2,10 +2,6 @@
 
 todo
 
-classes : gestion des erreurs et validation des formulaires
-
-scope bouncer : gérer les forbidden et autres cas tordus
-
 programmation / progression
 
 - tests unitaires api

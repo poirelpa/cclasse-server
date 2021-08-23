@@ -1,11 +1,10 @@
 <template>
     <form @submit.prevent="submit" class="bg-white shadow rounded p-4 mx-auto max-w-2xl flex-grow">
-      <notification :message="message"/>
       <h1>Récupération de mot de passe</h1>
       <p>Vous recevrez un code de réinitialisation du mot de passe par email.</p>
       <div>
         <label for="email" class=""><h2>Email :</h2></label>
-        <input type="email" v-model="email" id="email" class="w-full" required/>
+        <input type="email" v-model="email" id="email" class="w-full" v-focus required/>
       </div>
       <div v-if="step == 2" class="mt-4">
         <p>Veuillez copier ci-dessous le code reçu par mail. Attention, ce code n'est valable qu'une heure.</p>
@@ -36,7 +35,6 @@
         passwordConfirm:"",
         step:1,
         buttonClicked:false,
-        message:""
       }
     },
     methods: {
@@ -46,7 +44,7 @@
       },
 
       async submit(){
-        this.message = ""
+        this.$notify("")
         this.buttonClicked = true
 
         try{
@@ -56,18 +54,11 @@
             this.buttonClicked = false
           }
           if(result.message){
-            this.message = result.message
+            this.$notify(result.message)
           }
         }catch(e){
-          this.buttonClicked = false
-          if(e?.response?.data?.errors) {
-            _.each(e.response.data.errors,(errors,field) => {
-              _.each(errors, error => {
-                this.message += error + "\n"
-              });
-            });
-          } else {
-            this.message = `Exception non répertoriée : ${e.message}`
+          if(!e.handled) {
+            this.$notify(`Exception non répertoriée : ${e.message}`)
           }
         }
         this.buttonClicked = false

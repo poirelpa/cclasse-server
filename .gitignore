@@ -24,3 +24,5 @@ Homestead.json
 
 /public/css
 /public/js
+
+/resources/js/config.js

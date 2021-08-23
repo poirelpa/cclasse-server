@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ClassModel;
 use App\Http\Resources\ClassResource;
 use Illuminate\Http\Request;
+use Bouncer;
 
 class ClassController extends Controller
 {
@@ -15,7 +16,7 @@ class ClassController extends Controller
      */
     public function index()
     {
-        return ClassResource::collection(ClassModel::whereCan('read')->get());
+        return ClassResource::collection(ClassModel::whereUserCan('read')->get());
     }
 
     /**
@@ -26,10 +27,18 @@ class ClassController extends Controller
      */
     public function store(Request $request)
     {
+        Bouncer::authorize('create', ClassModel::class);
+        $request->validate([
+            'year' => 'required|integer|min:2020',
+            'levels' => 'required',
+        ]);
+
         $params = $request->all();
         $params['user_id'] = auth()->user()->id;
+
         $class = ClassModel::create($params);
         $class->levels()->attach($request->input('levels'));
+
         return new ClassResource($class->fresh('levels'));
     }
 
@@ -41,7 +50,8 @@ class ClassController extends Controller
      */
     public function show(ClassModel $class)
     {
-        // return ClassModel::findOrFail($id);
+        Bouncer::authorize('read', $class);
+        
         return new ClassResource($class);
     }
 
@@ -54,10 +64,17 @@ class ClassController extends Controller
      */
     public function update(Request $request, ClassModel $class)
     {
-        //$class = ClassModel::findOrFail($id);
+        Bouncer::authorize('update', $class);
+
+        $request->validate([
+            'year' => 'required|integer|min:2020',
+            'levels' => 'required',
+        ]);
+
         $class->update($request->all());
 
         $class->levels()->sync($request->input('levels'));
+
         return new ClassResource($class->fresh('levels'));
     }
 
@@ -69,6 +86,8 @@ class ClassController extends Controller
      */
     public function destroy(ClassModel $class)
     {
+        Bouncer::authorize('delete', $class);
+
         $class->delete();
 
         return 204;

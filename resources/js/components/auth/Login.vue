@@ -1,10 +1,9 @@
 <template>
     <form @submit.prevent="login" class="bg-white shadow rounded p-4 mx-auto max-w-2xl flex-grow">
-      <notification :message="message"/>
       <h1>Connexion</h1>
       <div>
         <label for="email" class=""><h2>Email :</h2></label>
-        <input type="email" v-model="email" id="email" required class="w-full"/>
+        <input type="email" v-model="email" id="email" v-focus required class="w-full"/>
       </div>
       <div>
         <label for="password" class=""><h2>Mot de passe :</h2></label>
@@ -36,27 +35,32 @@
         password:"",
         remember:false,
         buttonClicked:false,
-        message:""
       }
     },
     methods: {
       async login(){
         this.buttonClicked = true
-        this.message = ""
+        this.$notify("Connexion en cours")
         try {
-          let result = await this.$store.dispatch("auth/loginWithCredentials",{email:this.email, password:this.password, remember: this.remember})
+          await this.$store.dispatch("auth/loginWithCredentials",{email:this.email, password:this.password, remember: this.remember})
+          await this.$store.dispatch("classes/getClasses")
+
           this.$router.push(this.$route.query.redirect ?? {name:'Home'})
 
+          this.$notify("")
         } catch(e) {
           this.buttonClicked = false
+
+          if(e.handled) return
+
           if(e?.response?.data?.error == "invalid_grant") {
-            this.message = "Identifiants incorrects"
+            this.$notify("Identifiants incorrects")
           } else if(e?.response?.data?.error) {
             console.error(e)
-            this.message = `Erreur d'API non répertoriée : ${e.response.data.error}`
+            this.$notify(`Erreur d'API non répertoriée : ${e.response.data.error}`)
           } else {
             console.error(e)
-            this.message = `Exception non répertoriée : ${e.message}`
+            this.$notify(`Exception non répertoriée : ${e.message}`)
           }
         }
       }

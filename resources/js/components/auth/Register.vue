@@ -1,10 +1,9 @@
 <template>
     <form @submit.prevent="register" class="bg-white shadow rounded p-4 mx-auto max-w-2xl flex-grow">
-      <notification :message="message"/>
       <h1>Création de compte</h1>
       <div>
         <label for="email" class=""><h2>Email :</h2></label>
-        <input type="email" v-model="email" id="email" class="w-full" required/>
+        <input type="email" v-model="email" id="email" class="w-full" v-focus required/>
 
         <label for="Nom" class=""><h2>Nom ou pseudonyme :</h2></label>
         <input type="text" v-model="name" id="name" class="w-full" required minlength="3"/>
@@ -31,7 +30,6 @@
         password:"",
         passwordConfirm:"",
         buttonClicked:false,
-        message:""
       }
     },
     methods: {
@@ -41,29 +39,24 @@
       },
       async register(){
         this.buttonClicked = true
-        this.message = ""
+        this.$notify("Création du compte utilisateur ...")
         try{
           let response = await this.$store.dispatch("auth/register",{email:this.email, name:this.name, password:this.password})
           if(response.message) {
-            this.message = response.message
-            if(response.status){
-              let result = await this.$store.dispatch("auth/loginWithCredentials",{email:this.email, password:this.password})
-              this.$router.push({name:'Home'})
-              return
-            }
+            this.$notify(response.message)
           }
-          this.$router.push({name:'Home'})
+          if(response.status){
+            let result = await this.$store.dispatch("auth/loginWithCredentials",{email:this.email, password:this.password})
+            this.$router.push({name:'Home'})
+            this.$notify("")
+            return
+          }
         } catch(e) {
           this.buttonClicked = false
-          if(e?.response?.data?.errors) {
-            _.each(e.response.data.errors,(errors,field) => {
-              _.each(errors, error => {
-                this.message += error + "\n"
-              });
-            });
-          } else {
-            this.message = `Exception non répertoriée : ${e.message}`
-          }
+
+            if(!e.handled) {
+              this.$notify(`Exception non répertoriée : ${e.message}`)
+            }
         }
       }
     }

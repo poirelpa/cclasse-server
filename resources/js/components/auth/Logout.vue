@@ -8,6 +8,7 @@
 <script>
   export default {
     async mounted(){
+      this.$notify('Déconnexion')
       await this.$store.dispatch("auth/logout")
       this.$router.push({name:'Login'})
     }

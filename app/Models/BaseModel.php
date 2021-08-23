@@ -3,7 +3,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Silber\Bouncer\Database\Ability;
 
 abstract class BaseModel extends Model
 {
@@ -12,7 +11,7 @@ abstract class BaseModel extends Model
         return Str::snake((new \ReflectionClass($this))->getShortName());
     }
 
-    public function scopeWhereCan($query, $ability, $user = null){
+    public function scopeWhereUserCan($query, $ability, $user = null){
         if(empty($user)) $user = auth()->id();
 
         return $query->whereRaw("id in (

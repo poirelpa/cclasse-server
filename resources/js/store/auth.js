@@ -3,6 +3,8 @@ import { mapState, mapGetters } from 'vuex'
 
 import Bouncer from '../utils/bouncer'
 import axios from 'axios'
+import api from '../utils/api.js'
+import config from '../config.js'
 
 export default {
   namespaced: true,
@@ -24,8 +26,8 @@ export default {
     async loginWithCredentials(context, credentials) {
       let response = await axios.post('/oauth/token',{
         grant_type: "password",
-        client_id: "1",
-        client_secret: "Gl4z1uob1D1spvWZ7llFTh5orQUSF5HvzN9LunKO",
+        client_id: config.CLIENT_ID,
+        client_secret: config.CLIENT_SECRET,
         username: credentials.email,
         password: credentials.password,
         scope: "*"
@@ -37,9 +39,9 @@ export default {
         localStorage.setItem('refresh_token', response.data.refresh_token)
       }
 
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.access_token;
+      api.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.access_token;
 
-      response = await axios.get('/api/v1/auth/current')
+      response = await api.get('/auth/current')
       let user = response?.data?.data
 
       context.commit('setUser', user)
@@ -52,7 +54,7 @@ export default {
       if(token) {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
-        let response = await axios.get('/api/v1/auth/current')
+        let response = await api.get('/auth/current')
         let user = response?.data?.data
 
         context.commit('setUser', user)
@@ -72,10 +74,10 @@ export default {
       context.getters.bouncer.setUser({})
     },
     resetPassword(context,data){
-      return axios.post('/api/v1/auth/resetPassword',data).then(response => response.data)
+      return api.post('/auth/resetPassword',data).then(response => response.data)
     },
     register(context,data){
-      return axios.post('/api/v1/auth/register',data).then(response => response.data)
+      return api.post('/auth/register',data).then(response => response.data)
     }
   },
   mutations: {

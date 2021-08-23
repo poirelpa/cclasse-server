@@ -10,8 +10,19 @@ export default createStore({
   },
   actions:{
     async notify(context, notification){
-      context.commit('setNotification', notification)
-      await sleep(5000)
+
+      let message = notification
+      if(notification?.response?.data?.errors) {
+        // api validation errors
+        message = ""
+        _.each(notification.response.data.errors,(errors,field) => {
+          _.each(errors, error => {
+            message += error + "\n"
+          });
+        });
+      }
+      context.commit('setNotification', message)
+      await sleep(8000)
       context.commit('setNotification', "")
     }
   },

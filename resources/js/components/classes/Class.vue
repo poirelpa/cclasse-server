@@ -8,14 +8,14 @@
         </h1>
         <div>
           <label for="year" class=""><h2>Année :</h2></label>
-          <input type="number" v-model="year" id="year" class="w-20 m-0"/> / {{year+1}}
+          <input type="number" v-model="year" id="year" class="w-20 m-0" v-focus required min="2020" max="2030"/> / {{year+1}}
         </div>
 
         <h2 v-if="Object.keys(levels).length">Niveau(x) :</h2>
         <div class="flex flex-wrap">
-          <div v-for="level of levels" class="mx-2 w-14 flex-shrink-0">
-            <input v-model="checkedLevels" type="checkbox" :id="level.id" :value="level.id" />
-            <label :for="level.id" class="ml-1"> {{level.name}}</label>
+          <div v-for="(level, i) in levels" class="mx-2 w-14 flex-shrink-0">
+            <input v-model="checkedLevels" type="checkbox" :id="'level' + level.id" :value="level.id" @change="verifLevels" />
+            <label :for="'level' + level.id" class="ml-1"> {{level.name}}</label>
           </div>
         </div>
         <button type="submit" :disabled="buttonClicked" v-if="!id">Créer</button>
@@ -34,13 +34,14 @@
 
 <script>
 
+
   let printYear = function(year){return year + "/" + (year+1)}
   export default {
     data() {
       return {
         year:0,
         checkedLevels:[],
-        buttonClicked:false
+        buttonClicked:false,
       }
     },
     props:{
@@ -67,13 +68,28 @@
       }
     },
     methods: {
+      verifLevels(){
+        let cb = document.getElementById('level1')
+        if(!cb) return
+        cb.setCustomValidity(this.checkedLevels.length > 0 ? "" : "Veuillez sélectionner au moins un niveau.")
+      },
       async save(){
         this.buttonClicked = true
-        if(this.isNew){
-          let cl = await this.$store.dispatch("classes/createClass",{name:this.name, year:this.year, levels:this.checkedLevels})
-          this.$router.push({name:'Class',params:{id:cl.id}})
-        } else {
-          await this.$store.dispatch("classes/updateClass",Object.assign({},this.storeClass,{name:this.name, year:this.year, levels:this.checkedLevels}))
+        try{
+          if(this.isNew){
+            this.$notify("Création en cours ...")
+            let cl = await this.$store.dispatch("classes/createClass",{name:this.name, year:this.year, levels:this.checkedLevels})
+            this.$router.push({name:'Class',params:{id:cl.id}})
+            this.$notify("Création effectuée")
+          } else {
+            this.$notify("Sauvegarde en cours ...")
+            await this.$store.dispatch("classes/updateClass",Object.assign({},this.storeClass,{name:this.name, year:this.year, levels:this.checkedLevels}))
+            this.$notify("Modifications sauvegardées")
+          }
+        } catch(e) {
+          if(!e.handled) {
+            this.$notify(`Exception non répertoriée : ${e.message}`)
+          }
         }
         this.buttonClicked = false
       },
@@ -93,6 +109,7 @@
 
         this.year=this.storeYear
         this.checkedLevels = this.storeCheckedLevels
+
       }
     },
     created() {
@@ -101,6 +118,9 @@
     mounted() {
       this.initDataFromStore()
       this.buttonClicked = false
+    },
+    updated(){
+      this.verifLevels()
     }
   }
 </script>
