@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClassesLevels extends Migration
+class CreateClassLevelTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateClassesLevels extends Migration
      */
     public function up()
     {
-        Schema::create('classes_levels', function (Blueprint $table) {
+        Schema::create('class_level', function (Blueprint $table) {
             $table->id();
             $table->foreignId('class_id')->constrained('classes')->onDelete('cascade');
             $table->foreignid('level_id')->constrained('levels');
@@ -28,6 +28,6 @@ class CreateClassesLevels extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('classes_levels');
+        Schema::dropIfExists('class_level');
     }
 }

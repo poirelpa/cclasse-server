@@ -21,7 +21,7 @@ class ClassModel extends BaseModel
 
     public function levels()
     {
-        return $this->belongsToMany(Level::class, 'classes_levels', 'class_id');
+        return $this->belongsToMany(Level::class, 'class_level', 'class_id');
     }
     public function user()
     {
