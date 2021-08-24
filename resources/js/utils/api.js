@@ -13,7 +13,7 @@ const api = axios.create({
 
 api.interceptors.response.use(null, error => {
 
-  switch (error.response.status) {
+  switch (error?.response?.status) {
 
     case 401:
       store.dispatch('notify','Connexion nécessaire.')

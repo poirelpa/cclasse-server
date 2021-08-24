@@ -21,7 +21,7 @@ export default {
 
   actions: {
     async loginWithCredentials(context, credentials) {
-      let response = await axios.post('/oauth/token',{
+      let response = await axios.post(config.OAUTH_URL + '/token',{
         grant_type: "password",
         client_id: config.CLIENT_ID,
         client_secret: config.CLIENT_SECRET,
