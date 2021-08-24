@@ -29,7 +29,7 @@ api.interceptors.response.use(null, error => {
       error.handled = true
       break
     case 422:
-      if(error?.response?.data?.errors) {
+      if(error.response.data?.errors) {
         store.dispatch('notify',error)
         error.handled = true
       }

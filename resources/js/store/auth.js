@@ -1,6 +1,3 @@
-import Vue from 'vue'
-import { mapState, mapGetters } from 'vuex'
-
 import Bouncer from '../utils/bouncer'
 import axios from 'axios'
 import api from '../utils/api.js'

@@ -46,7 +46,7 @@
             this.$notify(response.message)
           }
           if(response.status){
-            let result = await this.$store.dispatch("auth/loginWithCredentials",{email:this.email, password:this.password})
+            await this.$store.dispatch("auth/loginWithCredentials",{email:this.email, password:this.password})
             this.$router.push({name:'Home'})
             this.$notify("")
             return

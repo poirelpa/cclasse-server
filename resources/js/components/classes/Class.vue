@@ -14,8 +14,8 @@
         <h2 v-if="Object.keys(levels).length">Niveau(x) :</h2>
         <div class="flex flex-wrap">
           <div v-for="(level, i) in levels" class="mx-2 w-14 flex-shrink-0">
-            <input v-model="checkedLevels" type="checkbox" :id="'level' + level.id" :value="level.id" @change="verifLevels" />
-            <label :for="'level' + level.id" class="ml-1"> {{level.name}}</label>
+            <input v-model="checkedLevels" type="checkbox" :id="'level' + i" :value="level.id" @change="verifLevels" />
+            <label :for="'level' + i" class="ml-1"> {{level.name}}</label>
           </div>
         </div>
         <button type="submit" :disabled="buttonClicked" v-if="!id">Créer</button>
@@ -69,7 +69,7 @@
     },
     methods: {
       verifLevels(){
-        let cb = document.getElementById('level1')
+        let cb = document.getElementById('level0')
         if(!cb) return
         cb.setCustomValidity(this.checkedLevels.length > 0 ? "" : "Veuillez sélectionner au moins un niveau.")
       },
