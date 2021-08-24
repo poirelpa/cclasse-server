@@ -8,22 +8,22 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+        sans: ['Inter var', ...defaultTheme.fontFamily.sans]
       },
       colors: {
-        pri:colors.orange,
-        sec:colors.teal,
-        ter:colors.lime,
-        qua:colors.rose,
-      },
-    },
+        pri: colors.orange,
+        sec: colors.teal,
+        ter: colors.lime,
+        qua: colors.rose
+      }
+    }
   },
   variants: {
     extend: {
       opacity: ['disabled'],
       backgroundColor: ['disabled'],
       cursor: ['disabled']
-    },
+    }
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms')]
 }

@@ -20,39 +20,39 @@ export default {
   },
 
   actions: {
-    async loginWithCredentials(context, credentials) {
-      let response = await axios.post(config.OAUTH_URL + '/token',{
-        grant_type: "password",
+    async loginWithCredentials (context, credentials) {
+      let response = await axios.post(config.OAUTH_URL + '/token', {
+        grant_type: 'password',
         client_id: config.CLIENT_ID,
         client_secret: config.CLIENT_SECRET,
         username: credentials.email,
         password: credentials.password,
-        scope: "*"
+        scope: '*'
       })
 
-      if(credentials.remember){
+      if (credentials.remember) {
         localStorage.setItem('access_token', response.data.access_token)
         localStorage.setItem('expires_in', response.data.expires_in)
         localStorage.setItem('refresh_token', response.data.refresh_token)
       }
 
-      api.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.access_token;
+      api.defaults.headers.common.Authorization = 'Bearer ' + response.data.access_token
 
       response = await api.get('/auth/current')
-      let user = response?.data?.data
+      const user = response?.data?.data
 
       context.commit('setUser', user)
       context.getters.bouncer.setUser(context.state.user)
 
       return user
     },
-    async loginWithToken(context){
-      let token = localStorage.getItem('access_token')
-      if(token) {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+    async loginWithToken (context) {
+      const token = localStorage.getItem('access_token')
+      if (token) {
+        axios.defaults.headers.common.Authorization = 'Bearer ' + token
 
-        let response = await api.get('/auth/current')
-        let user = response?.data?.data
+        const response = await api.get('/auth/current')
+        const user = response?.data?.data
 
         context.commit('setUser', user)
         context.getters.bouncer.setUser(context.state.user)
@@ -60,25 +60,25 @@ export default {
         return user
       }
     },
-    logout(context){
-      delete axios.defaults.headers.common['Authorization'];
+    logout (context) {
+      delete axios.defaults.headers.common.Authorization
       localStorage.removeItem('access_token')
       localStorage.removeItem('expires_in')
       localStorage.removeItem('refresh_token')
 
       context.commit('setUser', {})
-      context.dispatch('classes/clearClasses',null,{root:true})
+      context.dispatch('classes/clearClasses', null, { root: true })
       context.getters.bouncer.setUser({})
     },
-    resetPassword(context,data){
-      return api.post('/auth/resetPassword',data).then(response => response.data)
+    resetPassword (context, data) {
+      return api.post('/auth/resetPassword', data).then(response => response.data)
     },
-    register(context,data){
-      return api.post('/auth/register',data).then(response => response.data)
+    register (context, data) {
+      return api.post('/auth/register', data).then(response => response.data)
     }
   },
   mutations: {
-    setUser(state, data){
+    setUser (state, data) {
       state.user = data
     }
   }

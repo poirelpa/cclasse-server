@@ -26,3 +26,4 @@ Homestead.json
 /public/js
 
 /resources/js/config.js
+.eslintcache

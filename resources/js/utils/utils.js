@@ -1,20 +1,20 @@
 export default {
-  indexById(arr) {
-    if(arr == null){
+  indexById (arr) {
+    if (arr == null) {
       return {
-        data:{},
-        order:[],
-        isLoaded:false
+        data: {},
+        order: [],
+        isLoaded: false
       }
     }
     return {
-      data:arr.reduce((map,obj)=>{map[obj.id]=obj;return map},{}),
-      order:arr.map(obj=>obj.id),
-      isLoaded:true
+      data: arr.reduce((map, obj) => { map[obj.id] = obj; return map }, {}),
+      order: arr.map(obj => obj.id),
+      isLoaded: true
     }
   },
-  ordered(obj){
-    return obj.order.map(order=>obj.data[order])
+  ordered (obj) {
+    return obj.order.map(order => obj.data[order])
   },
-  sleep(ms){return new Promise(resolve => setTimeout(resolve, ms))}
+  sleep (ms) { return new Promise(resolve => setTimeout(resolve, ms)) }
 }
