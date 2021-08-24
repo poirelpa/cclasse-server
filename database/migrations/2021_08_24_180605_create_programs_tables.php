@@ -25,7 +25,7 @@ class CreateProgramsTables extends Migration
             $table->text('name');
             $table->string('color', 7);
             $table->string('reference_xpath');
-            $table->foreignId('parent_subject_id')->nullable()->constrained('subjects')->onDelete('cascade');
+            $table->foreignId('parent_id')->nullable()->constrained('subjects')->onDelete('cascade');
             $table->foreignId('program_id')->nullable()->constrained('programs')->onDelete('cascade');
             $table->foreignId('class_id')->nullable()->constrained('classes')->onDelete('cascade');
             $table->timestamps();

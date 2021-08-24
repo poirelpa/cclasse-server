@@ -19,13 +19,17 @@ class ClassModel extends BaseModel
      */
     protected $fillable = ['name', 'year', 'user_id'];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function levels()
     {
         return $this->belongsToMany(Level::class, 'class_level', 'class_id');
     }
-    public function user()
+    public function progressions()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(progression::class);
     }
 
     protected static function booted()
@@ -34,7 +38,6 @@ class ClassModel extends BaseModel
             $builder->orderByDesc('updated_at');
         });
     }
-
 
     public function getMorphClass()
     {

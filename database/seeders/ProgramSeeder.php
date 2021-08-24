@@ -32,7 +32,7 @@ class ProgramSeeder extends Seeder
             'reference_file' => $program->reference
         ]);
 
-        $p->levels->sync([7,8]);
+        $p->levels()->sync([7,8]);
 
 
         foreach ($program->items as $item) {
@@ -46,7 +46,7 @@ class ProgramSeeder extends Seeder
             'name' => $item->name,
             'color' => $item->color,
             'reference_xpath' => $item->referenceXPath ?? '',
-            'parent_subject_id' => $parentId,
+            'parent_id' => $parentId,
             'program_id' => $programId
         ]);
 
