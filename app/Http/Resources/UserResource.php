@@ -7,7 +7,6 @@ use App\Http\Controllers\UserController;
 
 class UserResource extends JsonResource
 {
-
     /**
      * Transform the resource into an array.
      *

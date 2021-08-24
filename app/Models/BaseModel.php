@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -11,8 +12,11 @@ abstract class BaseModel extends Model
         return Str::snake((new \ReflectionClass($this))->getShortName());
     }
 
-    public function scopeWhereUserCan($query, $ability, $user = null){
-        if(empty($user)) $user = auth()->id();
+    public function scopeWhereUserCan($query, $ability, $user = null)
+    {
+        if (empty($user)) {
+            $user = auth()->id();
+        }
 
         return $query->whereRaw("id in (
             select e.id from {$this->table} e
@@ -26,7 +30,7 @@ abstract class BaseModel extends Model
                 on ar.role_id = r.id
             inner join users u
                 on (u.id = ? and (u.id = ar.entity_id and ar.entity_type = 'user') or u.id = (p.entity_id and p.entity_type = 'user'))
-                ". (in_array('user_id',$this->fillable) ? 'and (a.only_owned = 0 or u.id = e.user_id)':'')."
-            )",[$this->getMorphClass(), $ability, $user]);
+                ". (in_array('user_id', $this->fillable) ? 'and (a.only_owned = 0 or u.id = e.user_id)' : '')."
+            )", [$this->getMorphClass(), $ability, $user]);
     }
 }

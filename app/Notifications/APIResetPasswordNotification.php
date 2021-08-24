@@ -41,7 +41,7 @@ class APIResetPasswordNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->greeting('Bonjour')
             ->line('La réinitialisation du mot de passe associé à votre compte "CClasse" a été demandée.')
             ->line('Pour donner suite, merci de copier/coller le code ci-dessous dans le champ prévu à cet effet dans l\'application.')

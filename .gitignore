@@ -28,3 +28,4 @@ Homestead.json
 /resources/js/config.js
 .eslintcache
 public/mix-manifest.json
+.php-cs-fixer.cache

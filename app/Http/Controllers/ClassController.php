@@ -51,7 +51,7 @@ class ClassController extends Controller
     public function show(ClassModel $class)
     {
         Bouncer::authorize('read', $class);
-        
+
         return new ClassResource($class);
     }
 

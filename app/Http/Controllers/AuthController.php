@@ -12,12 +12,14 @@ use Illuminate\Auth\Events\PasswordReset;
 
 class AuthController extends Controller
 {
-    public function current(Request $request){
+    public function current(Request $request)
+    {
         return new UserResource(auth()->user());
     }
 
-    public function resetPassword(Request $request){
-        if(!empty($request->token)){
+    public function resetPassword(Request $request)
+    {
+        if (!empty($request->token)) {
             $request->validate([
                 'token' => 'required',
                 'email' => 'required|email',
@@ -43,7 +45,7 @@ class AuthController extends Controller
                 $request->only('email')
             );
 
-            if($status == Password::INVALID_USER){
+            if ($status == Password::INVALID_USER) {
                 // We do not want an attacker to know  which emails are valid or not
                 $status = Password::RESET_LINK_SENT;
             }
@@ -51,7 +53,8 @@ class AuthController extends Controller
         return response()->json(['message' => __($status), 'status' => true], 201);
     }
 
-    public function register(Request $request){
+    public function register(Request $request)
+    {
         $request->validate([
             'email' => 'required|email|unique:users',
             'name' => 'required|min:3',
@@ -63,6 +66,5 @@ class AuthController extends Controller
             'password' => Hash::make($request->password)
         ]);
         return response()->json(['message' => "Compte créé.", 'status' => true, 'user' => $user], 201);
-
     }
 }
