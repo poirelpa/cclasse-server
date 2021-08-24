@@ -9,22 +9,22 @@
       <button
         class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
         type="button"
-        v-on:click="toggleCollapseShow('bg-white m-2 py-3 px-6')"
+        @click="toggleCollapseShow('bg-white m-2 py-3 px-6')"
       >
-        <i class="fas fa-bars"></i>
+        <i class="fas fa-bars" />
       </button>
       <!-- Collapse -->
       <div
         class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded"
-        v-bind:class="collapseShow"
+        :class="collapseShow"
       >
         <!-- Collapse header -->
         <button
           type="button"
           class="md:hidden float-right cursor-pointer text-black opacity-50 md:hidden px-3 pb-2 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
-          v-on:click="toggleCollapseShow('hidden')"
+          @click="toggleCollapseShow('hidden')"
         >
-          <i class="fas fa-times"></i>
+          <i class="fas fa-times" />
         </button>
         <slot />
       </div>
@@ -34,15 +34,15 @@
 <script>
 
 export default {
-  data() {
+  data () {
     return {
-      collapseShow: "hidden"
-    };
+      collapseShow: 'hidden'
+    }
   },
   methods: {
-    toggleCollapseShow: function(classes) {
-      this.collapseShow = classes;
+    toggleCollapseShow: function (classes) {
+      this.collapseShow = classes
     }
   }
-};
+}
 </script>
