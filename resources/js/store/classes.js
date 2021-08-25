@@ -55,6 +55,11 @@ export default {
       return api
         .get('/levels')
         .then(response => context.commit('setLevels', response.data.data))
+    },
+    getClassDetails (context, cl) {
+      return api
+        .get(cl._links.self)
+        .then(response => context.commit('updateClass', response.data.data))
     }
   },
   mutations: {

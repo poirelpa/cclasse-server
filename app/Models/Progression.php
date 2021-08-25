@@ -32,9 +32,4 @@ class Progression extends BaseModel
     {
         return $this->belongToMany(Subject::class);
     }
-
-    public function class_()
-    {
-        return $this->belongsTo(ClassModel::class);
-    }
 }

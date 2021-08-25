@@ -81,8 +81,8 @@ const routes = [
     }
   },
   {
-    path: '/programmation/:classId(\\d)/programmation/:id(\\d)',
-    name: 'NewProgrammation',
+    path: '/class/:classId(\\d)/programmation/:id(\\d)',
+    name: 'Programmation',
     component: Programmation,
     meta: {
       permissions (bouncer, to, from) {

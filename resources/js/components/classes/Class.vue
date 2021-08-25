@@ -77,17 +77,17 @@
     <div v-if="storeClass.id">
       <h2>Programmations</h2>
       <router-link
-        :to="{name:'NewProgrammation', params: {classId: storeClass.id}}"
+        :to="{name:'NewProgrammation', params: {classId: id}}"
       >
         <i class="fas fa-plus" /> Créer
       </router-link>
       <ul>
         <li
-          v-for="prog in storeClass.progressions"
+          v-for="prog in storeClass.programmings"
           :key="prog.id"
         >
           <router-link
-            :to="{name:'Progression',params:{id:prog.id}}"
+            :to="{name:'Programmation',params:{classId: id, id:prog.id}}"
             :title="prog.name"
           >
             <i class="fas fa-users" /> {{ classItem.name }}
@@ -120,9 +120,7 @@ export default {
     isLoaded () { return this.$store.state.classes.classes.isLoaded && this.$store.state.classes.levels.isLoaded },
     levels () { return this.$store.getters['classes/levels'] },
     name () { return printYear(this.year) + (this.checkedLevels.length ? ' (' + this.checkedLevels.slice(0).sort().map(id => this.$store.getters['classes/levelsById'][id]?.name).join(' ') + ')' : '') },
-    storeClass () { return this.$store.getters['classes/classesById'][this.id] ?? {} },
-    storeYear () { return this.storeClass.year ?? new Date().getFullYear() },
-    storeCheckedLevels () { return this.storeClass.levels?.map(l => l.id) ?? [] }
+    storeClass () { return this.$store.getters['classes/classesById'][this.id] ?? {} }
   },
   watch: {
     storeClass () {
@@ -130,14 +128,16 @@ export default {
     },
     levels () {
       this.initDataFromStore()
+    },
+    id () {
+      this.initDataFromApi()
     }
   },
   created () {
     this.$store.dispatch('classes/getLevels')
   },
   mounted () {
-    this.initDataFromStore()
-    this.buttonClicked = false
+    this.initDataFromApi()
   },
   updated () {
     this.verifLevels()
@@ -147,6 +147,23 @@ export default {
       const cb = document.getElementById('level0')
       if (!cb) return
       cb.setCustomValidity(this.checkedLevels.length > 0 ? '' : 'Veuillez sélectionner au moins un niveau.')
+    },
+    initDataFromStore () {
+      if (!this.isNew &&
+          this.$store.state.classes.classes.isLoaded &&
+          this.$store.getters['classes/classesById'][this.id] === undefined) {
+        this.$router.push('/missing')
+      }
+
+      this.year = this.storeClass.year ?? new Date().getFullYear()
+      this.checkedLevels = this.storeClass.levels?.map(l => l.id) ?? []
+    },
+    initDataFromApi () {
+      if (!this.isNew) {
+        this.$store.dispatch('classes/getClassDetails', this.storeClass)
+      }
+      this.initDataFromStore()
+      this.buttonClicked = false
     },
     async save () {
       this.buttonClicked = true
@@ -174,16 +191,6 @@ export default {
         await this.$store.dispatch('classes/deleteClass', this.storeClass)
         this.$router.push({ name: 'Home' })
       }
-    },
-    initDataFromStore () {
-      if (!this.isNew &&
-          this.$store.state.classes.classes.isLoaded &&
-          this.$store.getters['classes/classesById'][this.id] === undefined) {
-        this.$router.push('/missing')
-      }
-
-      this.year = this.storeYear
-      this.checkedLevels = this.storeCheckedLevels
     }
   }
 }

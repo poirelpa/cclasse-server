@@ -27,9 +27,13 @@ class ClassModel extends BaseModel
     {
         return $this->belongsToMany(Level::class, 'class_level', 'class_id');
     }
-    public function progressions()
+    public function subjects()
     {
-        return $this->belongsToMany(progression::class);
+        return $this->hasMany(Subject::class, 'class_id');
+    }
+    public function programmings()
+    {
+        return $this->hasMany(Programming::class, 'class_id');
     }
 
     protected static function booted()

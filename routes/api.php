@@ -28,7 +28,6 @@ Route::prefix('v1')->group(function () {
         Route::get('auth/current', [AuthController::class,'current']);
         Route::apiResource('/users', UserController::class);
         Route::apiResource('/classes', ClassController::class);
-        Route::get('/classes/{class}/levels', [ClassController::class, 'getLevels']);
         Route::get('/levels', [LevelController::class, 'index']);
         Route::get('/programs', [ProgramController::class, 'index']);
         Route::get('/programs/{program}', [ProgramController::class, 'show']);

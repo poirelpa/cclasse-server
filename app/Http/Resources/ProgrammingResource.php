@@ -2,10 +2,9 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SubjectResource extends JsonResource
+class ProgrammingResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,10 +18,10 @@ class SubjectResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'color' => $this->color,
-            'reference_xpath' => $this->reference_xpath,
-            'children' => SubjectResource::collection($this->whenLoaded('children')),
+            'subject' => new SubjectResource($this->subject),
+            'progressions' => ProgressionResource::collection($this->whenLoaded('progressions')),
             '_links' => [
-                'reference' => Storage::disk('public')->url('references/'.$this->program->reference_file)
+                'self' => action([ClassController::class, 'show'], $this),
             ]
         ];
     }
