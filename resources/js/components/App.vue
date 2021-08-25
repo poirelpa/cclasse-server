@@ -57,7 +57,7 @@
     <div class="relative md:ml-64 bg-gray-50 p-3">
       <notification :message="notification" />
     </div>
-    <div class="relative md:ml-o64 bg-gray-50 p-3 min-h-screen flex items-center justify-center  ">
+    <div class="relative md:ml-64 bg-gray-50 p-3 min-h-screen flex items-center justify-center  ">
       <router-view />
     </div>
   </div>
