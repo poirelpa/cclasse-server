@@ -74,22 +74,28 @@
         >Modifier</button>
       </span>
     </loading>
-    <h2>Programmations</h2>
-    <ul>
-      <li
-        v-for="prog in storeClass.programmations"
-        :key="prog.id"
+    <div v-if="storeClass.id">
+      <h2>Programmations</h2>
+      <router-link
+        :to="{name:'NewProgrammation', params: {classId: storeClass.id}}"
       >
-        <router-link
-          :to="{name:'Programmation',params:{id:prog.id}}"
-          :title="prog.name"
+        <i class="fas fa-plus" /> Créer
+      </router-link>
+      <ul>
+        <li
+          v-for="prog in storeClass.progressions"
+          :key="prog.id"
         >
-          <i class="fas fa-users" /> {{ classItem.name }}
-        </router-link>
-      </li>
-    </ul>
+          <router-link
+            :to="{name:'Progression',params:{id:prog.id}}"
+            :title="prog.name"
+          >
+            <i class="fas fa-users" /> {{ classItem.name }}
+          </router-link>
+        </li>
+      </ul>
+    </div>
   </form>
-  <debug :obj="storeClass" />
 </template>
 
 <script>

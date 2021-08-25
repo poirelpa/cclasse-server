@@ -81,10 +81,10 @@ export default {
       this.$notify('Connexion en cours')
       try {
         await this.$store.dispatch('auth/loginWithCredentials', { email: this.email, password: this.password, remember: this.remember })
-        await Promise.all(
+        await Promise.all([
           this.$store.dispatch('classes/getClasses'),
           this.$store.dispatch('programs/getPrograms')
-        )
+        ])
 
         this.$router.push(this.$route.query.redirect ?? { name: 'Home' })
 
