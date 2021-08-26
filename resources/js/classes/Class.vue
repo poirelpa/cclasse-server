@@ -117,14 +117,12 @@ export default {
     isNew () { return Number.isNaN(this.id) },
     isLoaded () { return this.classesLoaded && this.levelsLoaded },
     name () {
-      return ((year) => { return year + '/' + (year + 1) })(
-        (this.year) +
-        (
-          this.checkedLevels.length
-            ? ' (' + this.checkedLevels.slice(0).sort()
-              .map(id => this.findLevel[id]?.name).join(' ') + ')'
-            : ''
-        )
+      return (year) => this.year + '/' + (this.year + 1) +
+      (
+        this.checkedLevels.length
+          ? ' (' + this.checkedLevels.slice(0).sort()
+            .map(id => this.findLevel[id]?.name).join(' ') + ')'
+          : ''
       )
     },
     storeClass () { return this.findClass[this.id] ?? {} },

@@ -1,7 +1,7 @@
 import router from '../router.js'
 import store from '../store.js'
-import restStore from '../utils/restStore.js'
 import routes from './routes.js'
+import authStore from './store.js'
 
 export default {
   init () {
@@ -9,7 +9,6 @@ export default {
       router.addRoute(route)
     })
 
-    store.registerModule('classes', restStore.createStore('classes'))
-    store.registerModule('levels', restStore.createStore('levels'))
+    store.registerModule('auth', authStore)
   }
 }

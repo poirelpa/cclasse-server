@@ -64,9 +64,9 @@
 </template>
 
 <script>
-import SideBar from './utilities/SideBar.vue'
+import SideBar from './components/SideBar.vue'
 import Classes from './classes/Classes.vue'
-import Bouncer from '../utils/bouncer.js'
+import Bouncer from './utils/bouncer.js'
 import { mapState } from 'vuex'
 
 export default {

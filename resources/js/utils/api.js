@@ -1,7 +1,7 @@
 import axios from 'axios'
 import config from '../config.js'
-import store from '../store/index.js'
-import router from '../router'
+import store from '../store.js'
+import router from '../router.js'
 
 const api = axios.create({
   baseURL: config.API_URL,

@@ -1,12 +1,18 @@
 import { createApp } from 'vue'
-import App from './components/App.vue'
-import Debug from './components/utilities/Debug.vue'
-import Loading from './components/utilities/Loading.vue'
-import Notification from './components/utilities/Notification.vue'
-import router from './router'
-import store from './store'
+import router from './router.js'
+import store from './store.js'
+import App from './App.vue'
+import Debug from './utils/Debug.vue'
+import Loading from './utils/Loading.vue'
+import Notification from './utils/Notification.vue'
 import mixin from './utils/mixin.js'
-import('./classes')
+import auth from './auth'
+import classes from './classes'
+import prog from './programmations'
+
+auth.init()
+classes.init()
+prog.init()
 
 require('./bootstrap')
 

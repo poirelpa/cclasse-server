@@ -9,7 +9,6 @@ export default {
       router.addRoute(route)
     })
 
-    store.registerModule('classes', restStore.createStore('classes'))
-    store.registerModule('levels', restStore.createStore('levels'))
+    store.registerModule('programmations', restStore.createStore('programmations'))
   }
 }
