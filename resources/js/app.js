@@ -6,13 +6,13 @@ import Debug from './utils/Debug.vue'
 import Loading from './utils/Loading.vue'
 import Notification from './utils/Notification.vue'
 import mixin from './utils/mixin.js'
-import auth from './auth'
-import classes from './classes'
-import prog from './programmations'
+import authModule from './auth'
+import classesModule from './classes'
+import programmingsModule from './programmings'
 
-auth.init()
-classes.init()
-prog.init()
+authModule.init()
+classesModule.init()
+programmingsModule.init()
 
 require('./bootstrap')
 

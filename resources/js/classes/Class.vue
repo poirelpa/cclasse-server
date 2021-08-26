@@ -76,7 +76,7 @@
     </loading>
     <div v-if="storeClass.id">
       <h2>Programmations</h2>
-      <router-link :to="{name:'NewProgrammation', params: {classId: id}}">
+      <router-link :to="{name:'NewProgramming', params: {classId: id}}">
         <i class="fas fa-plus" /> Créer
       </router-link>
       <ul>
@@ -85,10 +85,10 @@
           :key="prog.id"
         >
           <router-link
-            :to="{name:'Programmation',params:{classId: id, id:prog.id}}"
+            :to="{name:'Programming',params:{classId: id, id:prog.id}}"
             :title="prog.name"
           >
-            <i class="fas fa-users" /> {{ classItem.name }}
+            <i class="fas fa-users" /> {{ prog.name }}
           </router-link>
         </li>
       </ul>
@@ -117,7 +117,7 @@ export default {
     isNew () { return Number.isNaN(this.id) },
     isLoaded () { return this.classesLoaded && this.levelsLoaded },
     name () {
-      return (year) => this.year + '/' + (this.year + 1) +
+      return this.year + '/' + (this.year + 1) +
       (
         this.checkedLevels.length
           ? ' (' + this.checkedLevels.slice(0).sort()

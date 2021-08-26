@@ -18,7 +18,7 @@ class CreateProgressionsTables extends Migration
             $table->string('name');
             $table->string('color', 7);
             $table->foreignId('class_id')->constrained('classes')->onDelete('cascade');
-            $table->foreignId('parent_id')->nullable()->constrained('programmations')->onDelete('cascade');
+            $table->foreignId('parent_id')->nullable()->constrained('programmings')->onDelete('cascade');
             $table->foreignId('subject_id')->nullable()->constrained('subjects')->onDelete('cascade');
             $table->timestamps();
         });

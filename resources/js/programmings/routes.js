@@ -1,11 +1,11 @@
 import store from '../store'
-import Programmation from './Programmation.vue'
+import Programming from './Programming.vue'
 
 export default [
   {
-    path: '/class/:classId(\\d)/programmation/new',
-    name: 'NewProgrammation',
-    component: Programmation,
+    path: '/class/:classId(\\d)/programming/new',
+    name: 'NewProgramming',
+    component: Programming,
     props: (route) => {
       const id = Number.parseInt(route.params.id)
       const classId = Number.parseInt(route.params.classId)
@@ -14,15 +14,15 @@ export default [
     meta: {
       permissions (bouncer, to, from) {
         const id = Number.parseInt(to.params.classId)
-        const cl = store.getters['classes/classesById'][id]
+        const cl = store.getters['classes/find'][id]
         return bouncer.can('update', 'class', cl)
       }
     }
   },
   {
-    path: '/class/:classId(\\d)/programmation/:id(\\d)',
-    name: 'Programmation',
-    component: Programmation,
+    path: '/class/:classId(\\d)/programming/:id(\\d)',
+    name: 'Programming',
+    component: Programming,
     props: (route) => {
       const classId = Number.parseInt(route.params.classId)
       return { classId }
@@ -30,7 +30,7 @@ export default [
     meta: {
       permissions (bouncer, to, from) {
         const id = Number.parseInt(to.params.id)
-        const cl = store.getters['classes/classesById'][id]
+        const cl = store.getters['classes/find'][id]
         return bouncer.can('update', 'class', cl)
       }
     }

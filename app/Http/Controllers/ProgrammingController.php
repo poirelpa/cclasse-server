@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Programming;
+use App\Http\Resources\ProgrammingResource;
+use App\Models\ClassModel;
 use Illuminate\Http\Request;
+use Bouncer;
 
 class ProgrammingController extends Controller
 {
@@ -20,12 +23,23 @@ class ProgrammingController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|min:3',
+            'color' => 'regex:/^(#[0-9a-zA-Z]{6})?$/i',
+            'class_id' => 'required'
+        ]);
+
+        $params = $request->all();
+
+        $prog = new Programming($params);
+        Bouncer::authorize('update', $prog->class_);
+        $prog->save();
+        return new ProgrammingResource($prog);
     }
 
     /**

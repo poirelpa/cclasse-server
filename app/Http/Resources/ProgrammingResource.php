@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Controllers\ProgrammingController;
 
 class ProgrammingResource extends JsonResource
 {
@@ -19,9 +20,11 @@ class ProgrammingResource extends JsonResource
             'name' => $this->name,
             'color' => $this->color,
             'subject' => new SubjectResource($this->subject),
-            'progressions' => ProgressionResource::collection($this->whenLoaded('progressions')),
+            'class_id' => $this->class_id,
+            //'class' => $this->whenLoaded('class_'),
+            //TODO 'progressions' => ProgressionResource::collection($this->whenLoaded('progressions')),
             '_links' => [
-                'self' => action([ClassController::class, 'show'], $this),
+                'self' => action([ProgrammingController::class, 'show'], $this),
             ]
         ];
     }
