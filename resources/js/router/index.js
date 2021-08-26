@@ -1,7 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import store from '../store'
 
-import Class from '../components/classes/Class.vue'
 import Programmation from '../components/classes/Programmation.vue'
 
 const routes = [
@@ -34,36 +33,6 @@ const routes = [
     component: () => import('../components/auth/ResetPassword.vue')
   },
   {
-    path: '/class/:id(\\d+)',
-    name: 'Class',
-    component: Class,
-    props: (route) => {
-      const id = Number.parseInt(route.params.id)
-      return { id }
-    },
-    meta: {
-      permissions (bouncer, to, from) {
-        const id = Number.parseInt(to.params.id)
-        const cl = store.getters['classes/classesById'][id]
-        return bouncer.can('update', 'class', cl)
-      }
-    }
-  },
-  {
-    path: '/class/new',
-    name: 'NewClass',
-    component: Class,
-    props: (route) => {
-      const classId = Number.parseInt(route.params.classId)
-      return { classId }
-    },
-    meta: {
-      permissions (bouncer, to, from) {
-        return bouncer.can('create', 'class')
-      }
-    }
-  },
-  {
     path: '/class/:classId(\\d)/programmation/new',
     name: 'NewProgrammation',
     component: Programmation,
@@ -93,6 +62,7 @@ const routes = [
     }
   },
   {
+    name: '404',
     path: '/:catchAll(.*)',
     component: () => import('../components/NotFound.vue')
   }
@@ -117,6 +87,10 @@ router.beforeEach((to, from, next) => {
       // redirect to a universal page they will have access to
       next({ name: 'Home', replace: true })
     }
+  }
+  if (bouncer.isGuest && to.name === '404') {
+    redirect(next, to)
+    return
   }
   if (_.has(to.meta, 'permissions') || _.has(to.meta, 'roles')) {
     if (typeof to.meta.permissions === 'function') {

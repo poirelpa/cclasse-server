@@ -66,7 +66,7 @@
         <button
           type="button"
           :disabled="buttonClicked"
-          @click="deleteClass"
+          @click="delete_"
         >Supprimer</button>
         <button
           type="submit"
@@ -76,9 +76,7 @@
     </loading>
     <div v-if="storeClass.id">
       <h2>Programmations</h2>
-      <router-link
-        :to="{name:'NewProgrammation', params: {classId: id}}"
-      >
+      <router-link :to="{name:'NewProgrammation', params: {classId: id}}">
         <i class="fas fa-plus" /> Créer
       </router-link>
       <ul>
@@ -99,8 +97,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 
-const printYear = function (year) { return year + '/' + (year + 1) }
 export default {
   props: {
     id: {
@@ -117,10 +115,28 @@ export default {
   },
   computed: {
     isNew () { return Number.isNaN(this.id) },
-    isLoaded () { return this.$store.state.classes.classes.isLoaded && this.$store.state.classes.levels.isLoaded },
-    levels () { return this.$store.getters['classes/levels'] },
-    name () { return printYear(this.year) + (this.checkedLevels.length ? ' (' + this.checkedLevels.slice(0).sort().map(id => this.$store.getters['classes/levelsById'][id]?.name).join(' ') + ')' : '') },
-    storeClass () { return this.$store.getters['classes/classesById'][this.id] ?? {} }
+    isLoaded () { return this.classesLoaded && this.levelsLoaded },
+    name () {
+      return ((year) => { return year + '/' + (year + 1) })(
+        (this.year) +
+        (
+          this.checkedLevels.length
+            ? ' (' + this.checkedLevels.slice(0).sort()
+              .map(id => this.findLevel[id]?.name).join(' ') + ')'
+            : ''
+        )
+      )
+    },
+    storeClass () { return this.findClass[this.id] ?? {} },
+    ...mapGetters('classes', {
+      findClass: 'find',
+      classesLoaded: 'isLoaded'
+    }),
+    ...mapGetters('levels', {
+      levels: 'list',
+      findLevel: 'find',
+      levelsLoaded: 'isLoaded'
+    })
   },
   watch: {
     storeClass () {
@@ -133,9 +149,6 @@ export default {
       this.initDataFromApi()
     }
   },
-  created () {
-    this.$store.dispatch('classes/getLevels')
-  },
   mounted () {
     this.initDataFromApi()
   },
@@ -146,21 +159,31 @@ export default {
     verifLevels () {
       const cb = document.getElementById('level0')
       if (!cb) return
-      cb.setCustomValidity(this.checkedLevels.length > 0 ? '' : 'Veuillez sélectionner au moins un niveau.')
+      cb.setCustomValidity(
+        this.checkedLevels.length > 0
+          ? ''
+          : 'Veuillez sélectionner au moins un niveau.'
+      )
     },
     initDataFromStore () {
       if (!this.isNew &&
-          this.$store.state.classes.classes.isLoaded &&
-          this.$store.getters['classes/classesById'][this.id] === undefined) {
+          this.classesLoaded &&
+          this.findClass[this.id] === undefined) {
         this.$router.push('/missing')
       }
 
       this.year = this.storeClass.year ?? new Date().getFullYear()
       this.checkedLevels = this.storeClass.levels?.map(l => l.id) ?? []
     },
+    ...mapActions('classes', {
+      createClass: 'create',
+      readClass: 'read',
+      updateClass: 'update',
+      deleteClass: 'delete'
+    }),
     initDataFromApi () {
       if (!this.isNew) {
-        this.$store.dispatch('classes/getClassDetails', this.storeClass)
+        this.readClass(this.storeClass)
       }
       this.initDataFromStore()
       this.buttonClicked = false
@@ -168,27 +191,34 @@ export default {
     async save () {
       this.buttonClicked = true
       try {
+        const localClass = {
+          name: this.name,
+          year: this.year,
+          levels: this.checkedLevels
+        }
         if (this.isNew) {
           this.$notify('Création en cours ...')
-          const cl = await this.$store.dispatch('classes/createClass', { name: this.name, year: this.year, levels: this.checkedLevels })
+          const cl = await this.createClass(localClass)
           this.$router.push({ name: 'Class', params: { id: cl.id } })
           this.$notify('Création effectuée')
         } else {
           this.$notify('Sauvegarde en cours ...')
-          await this.$store.dispatch('classes/updateClass', Object.assign({}, this.storeClass, { name: this.name, year: this.year, levels: this.checkedLevels }))
+          await this.updateClass(Object.assign({}, this.storeClass, localClass))
           this.$notify('Modifications sauvegardées')
         }
       } catch (e) {
         if (!e.handled) {
           this.$notify(`Exception non répertoriée : ${e.message}`)
+        } else {
+          this.$handleErrors(e)
         }
       }
       this.buttonClicked = false
     },
-    async deleteClass () {
+    async delete_ () {
       if (confirm('Veuillez confirmer la suppression')) {
+        await this.deleteClass(this.storeClass)
         this.buttonClicked = true
-        await this.$store.dispatch('classes/deleteClass', this.storeClass)
         this.$router.push({ name: 'Home' })
       }
     }

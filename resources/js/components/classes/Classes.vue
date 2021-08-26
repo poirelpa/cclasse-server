@@ -20,11 +20,14 @@
     </ul>
   </loading>
 </template>
+
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  computed: {
-    classes () { return this.$store.getters['classes/classes'] },
-    isLoaded () { return this.$store.state.classes.classes.isLoaded }
-  }
+  computed: mapGetters('classes', {
+    classes: 'list',
+    isLoaded: 'isLoaded'
+  })
 }
 </script>

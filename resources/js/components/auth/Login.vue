@@ -66,6 +66,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   data () {
     return {
@@ -76,17 +78,27 @@ export default {
     }
   },
   methods: {
+    ...mapActions('auth', ['loginWithCredentials']),
+    ...mapActions('classes', {
+      loadClasses: 'load'
+    }),
+    ...mapActions('levels', {
+      loadLevels: 'load'
+    }),
     async login () {
       this.buttonClicked = true
       this.$notify('Connexion en cours')
       try {
-        await this.$store.dispatch('auth/loginWithCredentials', { email: this.email, password: this.password, remember: this.remember })
+        await this.loginWithCredentials({
+          email: this.email,
+          password: this.password,
+          remember: this.remember
+        })
         await Promise.all([
-          this.$store.dispatch('classes/getClasses'),
-          this.$store.dispatch('programs/getPrograms')
+          this.loadClasses(),
+          this.loadLevels()
         ])
-
-        this.$router.push(this.$route.query.redirect ?? { name: 'Home' })
+        this.$router.push('/class/2' ?? { name: 'Home' })
 
         this.$notify('')
       } catch (e) {
@@ -96,12 +108,8 @@ export default {
 
         if (e?.response?.data?.error === 'invalid_grant') {
           this.$notify('Identifiants incorrects')
-        } else if (e?.response?.data?.error) {
-          console.error(e)
-          this.$notify(`Erreur d'API non répertoriée : ${e.response.data.error}`)
         } else {
-          console.error(e)
-          this.$notify(`Exception non répertoriée : ${e.message}`)
+          this.handleError(e)
         }
       }
     }
