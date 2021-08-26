@@ -1,0 +1,23 @@
+@startuml
+User          "1"   *--   "*"     Class
+Class         "1"   o--   "1..*"  Level
+Class         "1"   *--   "*"     Programming
+Programming   "1"   *--   "*"     Progression
+Progression   "*"    --   "*"     Subject
+Progression   "1"    --   "1..*"  Week
+
+Level         "1..*" --o  "1"     Program
+Program       "1"   *--   "1..*"  Subject
+Subject       "1"   *--   "*"     Subject
+
+Class         "1"   *--   "*"     TimeTable
+TimeTable     "1"   *--   "*"     TimeSlot
+TimeSlot      "*"    -->  "1"     Subject
+
+Week          "*"     ->  "1"     TimeTable
+Week          "1"   *--   "*"     LogEntry
+LogEntry      "*"    -->  "*"     Subject
+LogEntry      "*"     ->  "1"     TimeSlot
+
+hide empty members
+@enduml
