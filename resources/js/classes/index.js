@@ -9,7 +9,12 @@ export default {
       router.addRoute(route)
     })
 
-    store.registerModule('classes', restStore.createStore('classes'))
+    store.registerModule('classes', restStore.createStore({
+      resourceName: 'classes',
+      relationships: {
+        programmings: 'programmings'
+      }
+    }))
     store.registerModule('levels', restStore.createStore('levels'))
   }
 }

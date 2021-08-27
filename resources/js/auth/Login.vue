@@ -98,7 +98,7 @@ export default {
           this.loadClasses(),
           this.loadLevels()
         ])
-        this.$router.push('/class/2' ?? { name: 'Home' })
+        this.$router.push(this.$route.query.redirect ?? { name: 'Home' })
 
         this.$notify('')
       } catch (e) {

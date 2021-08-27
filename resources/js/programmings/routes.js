@@ -7,14 +7,13 @@ export default [
     name: 'NewProgramming',
     component: Programming,
     props: (route) => {
-      const id = Number.parseInt(route.params.id)
       const classId = Number.parseInt(route.params.classId)
-      return { id, classId }
+      return { classId }
     },
     meta: {
       permissions (bouncer, to, from) {
         const id = Number.parseInt(to.params.classId)
-        const cl = store.getters['classes/find'][id]
+        const cl = store.getters['classes/find'](id)
         return bouncer.can('update', 'class', cl)
       }
     }
@@ -24,13 +23,14 @@ export default [
     name: 'Programming',
     component: Programming,
     props: (route) => {
+      const id = Number.parseInt(route.params.id)
       const classId = Number.parseInt(route.params.classId)
-      return { classId }
+      return { id, classId }
     },
     meta: {
       permissions (bouncer, to, from) {
         const id = Number.parseInt(to.params.id)
-        const cl = store.getters['classes/find'][id]
+        const cl = store.getters['classes/find'](id)
         return bouncer.can('update', 'class', cl)
       }
     }

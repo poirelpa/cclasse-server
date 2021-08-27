@@ -3,60 +3,62 @@
     class="bg-white shadow rounded p-4 mx-auto max-w-2xl flex-grow"
     @submit.prevent="save"
   >
-    <h1>
-      <span :v-if="isNew">Nouvelle </span>Programmation
-    </h1>
+    <loading :is-loaded="isLoaded">
+      <h1>
+        <span v-if="isNew">Nouvelle </span>Programmation
+      </h1>
 
-    <div>
-      <label for="name"><h2>Nom :</h2></label>
-      <input
-        id="name"
-        v-model="name"
-        v-focus
-        type="text"
-        required
-        minLength="3"
-        max="255"
-      >
       <div>
-        <label for="color"><h2>Couleur :</h2></label>
+        <label for="name"><h2>Nom :</h2></label>
         <input
-          id="color"
-          v-model="color"
-          type="color"
+          id="name"
+          v-model="name"
+          v-focus
+          type="text"
+          required
+          minLength="3"
+          max="255"
         >
-      </div>
-      <div>
-        <label for="subject"><h2>Matière :</h2></label>
-        TODO
-      </div>
-      <button
-        v-if="!id"
-        type="submit"
-        :disabled="buttonClicked"
-      >
-        Créer
-      </button>
-      <span
-        v-else
-        class="space-x-2"
-      >
+        <div>
+          <label for="color"><h2>Couleur :</h2></label>
+          <input
+            id="color"
+            v-model="color"
+            type="color"
+          >
+        </div>
+        <div>
+          <label for="subject"><h2>Matière :</h2></label>
+          TODO
+        </div>
         <button
-          type="button"
-          :disabled="buttonClicked"
-          @click="initDataFromStore"
-        >Annuler</button>
-        <button
-          type="button"
-          :disabled="buttonClicked"
-          @click="deleteProgramming"
-        >Supprimer</button>
-        <button
+          v-if="!id"
           type="submit"
           :disabled="buttonClicked"
-        >Modifier</button>
-      </span>
-    </div>
+        >
+          Créer
+        </button>
+        <span
+          v-else
+          class="space-x-2"
+        >
+          <button
+            type="button"
+            :disabled="buttonClicked"
+            @click="initDataFromStore"
+          >Annuler</button>
+          <button
+            type="button"
+            :disabled="buttonClicked"
+            @click="delete_"
+          >Supprimer</button>
+          <button
+            type="submit"
+            :disabled="buttonClicked"
+          >Modifier</button>
+        </span>
+      </div>
+    </loading>
   </form>
 </template>
 
@@ -85,36 +87,42 @@ export default {
   },
   computed: {
     isNew () { return Number.isNaN(this.id) },
-    storeProgramming () { return this.find[this.id] ?? {} },
-    ...mapGetters('programmings', ['find'])
+    storeProgramming () { return this.find(this.id) ?? {} },
+    isLoaded () { return this.isNew || this.isItemLoaded[this.id] },
+    ...mapGetters('programmings', ['find', 'isItemLoaded']),
+    ...mapGetters('classes', { findClass: 'find' })
   },
   watch: {
     storeProgramming () {
       this.initDataFromStore()
     },
     id () {
-      console.log('id')
       this.initDataFromApi()
+    },
+    isClassLoaded (old, value) {
+      if (value) {
+        this.initDataFromApi()
+      }
     }
   },
   mounted () {
-    console.log('m')
     this.initDataFromApi()
   },
   methods: {
     initDataFromStore () {
       if (!this.isNew &&
-          this.idLoaded &&
-          this.find[this.id] === undefined) {
+          this.isLoaded &&
+          this.find(this.id) === undefined) {
         this.$router.push('/missing')
       }
 
       this.name = this.storeProgramming.name ?? ''
       this.color = this.storeProgramming.color ?? ''
     },
-    initDataFromApi () {
+    async initDataFromApi () {
       if (!this.isNew) {
-        this.readProgramming(this.storeProgramming)
+        await this.readClass(this.findClass(this.classId))
+        await this.readProgramming(this.storeProgramming)
       }
       this.initDataFromStore()
       this.buttonClicked = false
@@ -148,9 +156,8 @@ export default {
     },
     async delete_ () {
       if (confirm('Veuillez confirmer la suppression')) {
-        await this.deleteProgramming(this.storeProgramming)
-        this.buttonClicked = true
-        this.$router.push({ name: 'Home' })
+        this.deleteProgramming(this.storeProgramming)
+        this.$router.push({ name: 'Class', params: { id: this.classId } })
       }
     },
     ...mapActions('programmings', {
@@ -158,7 +165,8 @@ export default {
       readProgramming: 'read',
       updateProgramming: 'update',
       deleteProgramming: 'delete'
-    })
+    }),
+    ...mapActions('classes', { readClass: 'read' })
   }
 }
 </script>

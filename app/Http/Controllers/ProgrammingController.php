@@ -36,10 +36,10 @@ class ProgrammingController extends Controller
 
         $params = $request->all();
 
-        $prog = new Programming($params);
-        Bouncer::authorize('update', $prog->class_);
-        $prog->save();
-        return new ProgrammingResource($prog);
+        $programming = new Programming($params);
+        Bouncer::authorize('update', $programming->class_);
+        $programming->save();
+        return new ProgrammingResource($programming);
     }
 
     /**
@@ -50,7 +50,9 @@ class ProgrammingController extends Controller
      */
     public function show(Programming $programming)
     {
-        //
+        Bouncer::authorize('update', $programming->class_);
+
+        return new ProgrammingResource($programming);
     }
 
     /**
@@ -62,7 +64,16 @@ class ProgrammingController extends Controller
      */
     public function update(Request $request, Programming $programming)
     {
-        //
+        Bouncer::authorize('update', $programming->class_);
+
+        $request->validate([
+            'name' => 'required|min:3',
+            'color' => 'regex:/^(#[0-9a-zA-Z]{6})?$/i'
+        ]);
+
+        $programming->update($request->all());
+
+        return new ProgrammingResource($programming);
     }
 
     /**
@@ -73,6 +84,10 @@ class ProgrammingController extends Controller
      */
     public function destroy(Programming $programming)
     {
-        //
+        Bouncer::authorize('update', $programming->class_);
+
+        $programming->delete();
+
+        return 204;
     }
 }

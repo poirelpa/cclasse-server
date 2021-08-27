@@ -13,7 +13,7 @@ export default [
     meta: {
       permissions (bouncer, to, from) {
         const id = Number.parseInt(to.params.id)
-        const cl = store.getters['classes/find'][id]
+        const cl = store.getters['classes/find'](id)
         return bouncer.can('update', 'class', cl)
       }
     }

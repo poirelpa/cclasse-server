@@ -121,11 +121,11 @@ export default {
       (
         this.checkedLevels.length
           ? ' (' + this.checkedLevels.slice(0).sort()
-            .map(id => this.findLevel[id]?.name).join(' ') + ')'
+            .map(id => this.findLevel(id)?.name).join(' ') + ')'
           : ''
       )
     },
-    storeClass () { return this.findClass[this.id] ?? {} },
+    storeClass () { return this.findClass(this.id) ?? {} },
     ...mapGetters('classes', {
       findClass: 'find',
       classesLoaded: 'isLoaded'
@@ -166,7 +166,7 @@ export default {
     initDataFromStore () {
       if (!this.isNew &&
           this.classesLoaded &&
-          this.findClass[this.id] === undefined) {
+          this.findClass(this.id) === undefined) {
         this.$router.push('/missing')
       }
 
@@ -179,9 +179,10 @@ export default {
       updateClass: 'update',
       deleteClass: 'delete'
     }),
-    initDataFromApi () {
+    async initDataFromApi () {
+      this.initDataFromStore()
       if (!this.isNew) {
-        this.readClass(this.storeClass)
+        await this.readClass(this.storeClass)
       }
       this.initDataFromStore()
       this.buttonClicked = false
@@ -215,7 +216,7 @@ export default {
     },
     async delete_ () {
       if (confirm('Veuillez confirmer la suppression')) {
-        await this.deleteClass(this.storeClass)
+        this.deleteClass(this.storeClass)
         this.buttonClicked = true
         this.$router.push({ name: 'Home' })
       }
