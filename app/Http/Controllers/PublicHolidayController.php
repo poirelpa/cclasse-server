@@ -6,6 +6,7 @@ use App\Models\PublicHoliday;
 use App\Models\HolidayZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 use Bouncer;
 
 class PublicHolidayController extends Controller
@@ -28,12 +29,17 @@ class PublicHolidayController extends Controller
      */
     public function store(Request $request)
     {
-        // TODO Bouncer::authorize('manage', PublicHoliday::class);
+        Bouncer::authorize('manage', PublicHoliday::class);
+
         if ($request->source == 'api') {
             $request->validate([
                 'year' => 'required|integer|min:2020',
             ]);
 
+            $ids = PublicHoliday::where(DB::raw('YEAR(day)'), $request->year)->get('id')->toArray();
+            PublicHoliday::destroy($ids);
+
+            $count = 0;
             $zones = HolidayZone::all();
             // TODO delete for current year
             foreach ($zones as $zone) {
@@ -45,8 +51,10 @@ class PublicHolidayController extends Controller
                         'day'  =>  date_create_from_format('Y-m-d', $date),
                         'holiday_zone_id' => $zone->id
                     ]);
+                    $count ++;
                 }
             }
+            return response()->json(['message' => "$count jours récupérés", 'status' => true], 201);
         }
     }
 

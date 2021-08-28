@@ -14,7 +14,7 @@ class SchoolHoliday extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['name', 'starts_on', 'ends_on'];
+    protected $fillable = ['name', 'starts_on', 'ends_on', 'academy_id'];
 
     public function academy()
     {

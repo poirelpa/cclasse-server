@@ -30,17 +30,19 @@ export default {
     }
   },
   methods: {
-    initPublicHolidays () {
-      api.post('/admin/publicHolidays', {
+    async initPublicHolidays () {
+      const response = await api.post('/admin/publicHolidays', {
         source: 'api',
         year: this.year
       })
+      this.$notify(response.data.message)
     },
-    initSchoolHolidays () {
-      api.post('/admin/schoolHolidays', {
+    async initSchoolHolidays () {
+      const response = await api.post('/admin/schoolHolidays', {
         source: 'api',
         year: this.year
       })
+      this.$notify(response.data.message)
     }
   }
 }
