@@ -32,6 +32,14 @@
             <i class="fas fa-user-plus" /> Créer un compte
           </router-link>
         </li>
+        <li v-if="$isA('admin')">
+          <router-link
+            :to="{name:'Admin'}"
+            class="block"
+          >
+            <i class="fas fa-user-cog" /> Administration
+          </router-link>
+        </li>
         <li v-if="!$isGuest">
           <router-link
             :to="{name:'Logout'}"
