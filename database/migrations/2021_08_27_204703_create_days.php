@@ -15,7 +15,7 @@ class CreateDays extends Migration
     {
         Schema::create('days', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
+            $table->date('day');
             $table->foreignId('class_id')->constrained('classes')->onDelete('cascade');
             $table->timestamps();
         });

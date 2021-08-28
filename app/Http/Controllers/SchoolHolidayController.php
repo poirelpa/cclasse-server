@@ -57,7 +57,10 @@ class SchoolHolidayController extends Controller
                     }
                     SchoolHoliday::create([
                         'name' => $holiday->fields->description,
-                        'starts_on'  =>  date_create_from_format('Y-m-d', substr($holiday->fields->start_date, 0, 10)),
+                        'starts_on'  =>  date_create_from_format(
+                            'Y-m-d',
+                            substr($holiday->fields->start_date, 0, 10)
+                        )->modify('+1 day'),
                         'ends_on'  =>  date_create_from_format('Y-m-d', substr($holiday->fields->end_date, 0, 10)),
                         'academy_id' => $academy->id
                     ]);

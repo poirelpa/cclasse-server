@@ -53,94 +53,47 @@
         </h2>
         <div class="flex flex-wrap">
           <div
+            v-for="(day, i) in days"
+            :key="i"
             class="mx-2 w-14 flex-shrink-0"
           >
             <input
-              id="monday"
-              v-model="checkedDays[1]"
+              :id="day"
+              v-model="checkedDays"
               type="checkbox"
+              :value="i"
               @change="verifDays"
             >
             <label
-              for="monday"
+              :for="day"
               class="ml-1"
-            > Lundi</label>
+            > {{ day }}</label>
           </div>
-          <div
-            class="mx-2 w-14 flex-shrink-0"
+        </div>
+        <div>
+          <label
+            for="academy"
+            class=""
+          ><h2>Académie :</h2></label>
+          <select
+            id="academy"
+            v-model="academy"
+            required
+            class="w-80"
           >
-            <input
-              id="tuesday"
-              v-model="checkedDays[2]"
-              type="checkbox"
-              @change="verifDays"
+            <option
+              v-for="a in academies"
+              :key="a.id"
+              :value="a.id"
             >
-            <label
-              for="tuesday"
-              class="ml-1"
-            > Mardi</label>
-          </div>
-          <div
-            class="mx-2 w-14 flex-shrink-0"
-          >
-            <input
-              id="wednesday"
-              v-model="checkedDays[3]"
-              type="checkbox"
-              @change="verifDays"
-            >
-            <label
-              for="wednesday"
-              class="ml-1"
-            > Mercredi</label>
-          </div>
-          <div
-            class="mx-2 w-14 flex-shrink-0"
-          >
-            <input
-              id="thursday"
-              v-model="checkedDays[4]"
-              type="checkbox"
-              @change="verifDays"
-            >
-            <label
-              for="thursday"
-              class="ml-1"
-            > Jeudi</label>
-          </div>
-          <div
-            class="mx-2 w-14 flex-shrink-0"
-          >
-            <input
-              id="friday"
-              v-model="checkedDays[5]"
-              type="checkbox"
-              @change="verifDays"
-            >
-            <label
-              for="friday"
-              class="ml-1"
-            > Vendredi</label>
-          </div>
-          <div
-            class="mx-2 w-14 flex-shrink-0"
-          >
-            <input
-              id="staturday"
-              v-model="checkedDays[6]"
-              type="checkbox"
-              @change="verifDays"
-            >
-            <label
-              for="saturday"
-              class="ml-1"
-            > Samedi</label>
-          </div>
+              {{ a.name }}
+            </option>
+          </select>
         </div>
       </div>
 
       <button
-        v-if="!id"
+        v-if="isNew"
         type="submit"
         :disabled="buttonClicked"
       >
@@ -166,7 +119,7 @@
         >Modifier</button>
       </span>
     </loading>
-    <div v-if="storeClass.id">
+    <div v-if="!isNew">
       <h2>
         <router-link :to="{name:'Progressions', params: {classId: id}}">
           <i class="fas fa-th-list" /> Progressions
@@ -200,7 +153,16 @@ export default {
     return {
       year: 0,
       checkedLevels: [],
-      checkedDays: [false, true, true, false, true, true, false],
+      days: {
+        1: 'Lundi',
+        2: 'Mardi',
+        3: 'Mercredi',
+        4: 'Jeudi',
+        5: 'Vendredi',
+        6: 'Samedi'
+      },
+      checkedDays: [1, 2, 4, 5],
+      academy: undefined,
       buttonClicked: false
     }
   },
@@ -225,6 +187,9 @@ export default {
       levels: 'list',
       findLevel: 'find',
       levelsLoaded: 'isLoaded'
+    }),
+    ...mapGetters('academies', {
+      academies: 'list'
     })
   },
   watch: {
@@ -258,15 +223,12 @@ export default {
       )
     },
     verifDays () {
-      const cb = document.getElementById('monday')
+      const cb = document.getElementById('Lundi')
       if (!cb) return
       cb.setCustomValidity(
-        this.checkedDays.reduce(
-          (prev, val) => prev + (val ? 1 : 0),
-          0
-        ) > 0
+        this.checkedDays.length > 0
           ? ''
-          : 'Veuillez sélectionner au moins un jour d\'école.'
+          : 'Veuillez sélectionner au moins un jour.'
       )
     },
     initDataFromStore () {
@@ -285,8 +247,12 @@ export default {
       updateClass: 'update',
       deleteClass: 'delete'
     }),
+    ...mapActions('academies', { loadAcademies: 'load' }),
     async initDataFromApi () {
       this.initDataFromStore()
+      if (this.isNew) {
+        await this.loadAcademies()
+      }
       if (!this.isNew) {
         await this.readClass(this.storeClass)
       }
@@ -302,6 +268,8 @@ export default {
           levels: this.checkedLevels
         }
         if (this.isNew) {
+          localClass.days = this.checkedDays
+          localClass.academy_id = this.academy
           this.$notify('Création en cours ...')
           const cl = await this.createClass(localClass)
           this.$router.push({ name: 'Class', params: { id: cl.id } })

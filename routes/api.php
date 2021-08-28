@@ -11,6 +11,7 @@ use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ProgressionController;
 use App\Http\Controllers\PublicHolidayController;
 use App\Http\Controllers\SchoolHolidayController;
+use App\Http\Controllers\AcademyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('/classes', ClassController::class);
         Route::apiResource('/progressions', ProgressionController::class);
         Route::get('/levels', [LevelController::class, 'index']);
+        Route::get('/academies', [AcademyController::class, 'index']);
         Route::get('/programs', [ProgramController::class, 'index']);
         Route::get('/programs/{program}', [ProgramController::class, 'show']);
 

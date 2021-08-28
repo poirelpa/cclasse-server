@@ -35,6 +35,10 @@ class ClassModel extends BaseModel
     {
         return $this->hasMany(Progression::class, 'class_id');
     }
+    public function days()
+    {
+        return $this->hasMany(Day::class, 'class_id');
+    }
 
     protected static function booted()
     {

@@ -16,5 +16,6 @@ export default {
       }
     }))
     store.registerModule('levels', restStore.createStore('levels'))
+    store.registerModule('academies', restStore.createStore('academies'))
   }
 }

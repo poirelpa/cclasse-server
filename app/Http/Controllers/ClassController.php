@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClassModel;
+use App\Models\Academy;
+use App\Models\Day;
 use App\Http\Resources\ClassResource;
 use Illuminate\Http\Request;
 use Bouncer;
@@ -31,6 +33,8 @@ class ClassController extends Controller
         $request->validate([
             'year' => 'required|integer|min:2020',
             'levels' => 'required',
+            'days' => 'required',
+            'academy_id' => 'required'
         ]);
 
         $params = $request->all();
@@ -38,6 +42,52 @@ class ClassController extends Controller
 
         $class = ClassModel::create($params);
         $class->levels()->attach($request->input('levels'));
+
+        // init days based upon academy_id
+        $academy = Academy::find($request->academy_id);
+        $year2 = $class->year + 1;
+        $schoolHolidays = $academy->schoolHolidays()
+            ->whereBetween(
+                'starts_on',
+                [date_create("{$class->year}-06-15"), date_create("$year2-08-14")]
+            )->get();
+        $publicHolidays = $academy->holidayZone->publicHolidays()
+            ->whereBetween(
+                'day',
+                [date_create("{$class->year}-08-16"), date_create("$year2-08-14")]
+            )->get();
+        for (
+            $day = date_create("{$class->year}-08-16");
+            $day < date_create("$year2-08-14");
+            $day->modify("+1 day")
+        ) {
+            $create = true;
+            if (!in_array($day->format('w'), $request->days)) {
+                $create = false;
+            }
+            if ($create) {
+                foreach ($publicHolidays as $ph) {
+                    if ($ph->day == $day->format('Y-m-d')) {
+                        $create = false;
+                        break;
+                    }
+                }
+            }
+            if ($create) {
+                foreach ($schoolHolidays as $sh) {
+                    if ($sh->starts_on <= $day->format('Y-m-d') && $sh->ends_on >= $day->format('Y-m-d')) {
+                        $create = false;
+                        break;
+                    }
+                }
+            }
+            if ($create) {
+                Day::create([
+                    'class_id' => $class->id,
+                    'day' => $day
+                ]);
+            }
+        }
 
         return new ClassResource($class->fresh('levels'));
     }
@@ -50,7 +100,6 @@ class ClassController extends Controller
      */
     public function show(ClassModel $class)
     {
-        $class->load('progressions', 'subjects');
         Bouncer::authorize('read', $class);
 
         return new ClassResource($class);

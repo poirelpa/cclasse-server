@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Academy;
+use App\Http\Resources\AcademyResource;
 use Illuminate\Http\Request;
 
 class AcademyController extends Controller
@@ -14,7 +15,7 @@ class AcademyController extends Controller
      */
     public function index()
     {
-        //
+        return AcademyResource::collection(Academy::all());
     }
 
     /**
