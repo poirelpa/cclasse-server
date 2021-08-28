@@ -3,7 +3,7 @@
     class="bg-white shadow rounded p-4 mx-auto max-w-2xl flex-grow"
   >
     <h1>Administration</h1>
-    <label for="year">Année :</label>
+    <label for="year">Année : </label>
     <input
       id="year"
       v-model="year"

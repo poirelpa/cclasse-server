@@ -2,9 +2,7 @@
 
 todo
 
-calendar
-
-programmation / progression
+progressions
 
 - tests unitaires api
 - tests unitaires store ?
