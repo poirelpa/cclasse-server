@@ -1,0 +1,18 @@
+@startuml
+
+HolidayZone "1" *-- "*" Academy
+HolidayZone "1" *-- "*" PublicHoliday
+Academy "1" *-- "*" SchoolHoliday
+
+note bottom of SchoolHoliday : https://data.education.gouv.fr/explore/dataset/fr-en-calendrier-scolaire
+
+note bottom of PublicHoliday : https://api.gouv.fr/documentation/jours-feries
+
+note "manually via seeder" as N1
+HolidayZone .. N1
+N1 .. Academy
+
+
+
+hide empty members
+@enduml

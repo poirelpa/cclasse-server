@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             LevelSeeder::class,
             UserSeeder::class,
             BouncerSeeder::class,
-            OauthSeeder::class
+            OauthSeeder::class,
+            HolidaySeeder::class
         ]);
     }
 }

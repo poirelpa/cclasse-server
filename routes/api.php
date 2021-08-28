@@ -9,6 +9,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ProgressionController;
+use App\Http\Controllers\PublicHolidayController;
+use App\Http\Controllers\SchoolHolidayController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,5 +35,11 @@ Route::prefix('v1')->group(function () {
         Route::get('/levels', [LevelController::class, 'index']);
         Route::get('/programs', [ProgramController::class, 'index']);
         Route::get('/programs/{program}', [ProgramController::class, 'show']);
+    });
+
+
+    Route::prefix('admin')->group(function () {
+        Route::post('publicHolidays', [PublicHolidayController::class, 'store']);
+        Route::post('schoolHolidays', [SchoolHolidayController::class, 'store']);
     });
 });

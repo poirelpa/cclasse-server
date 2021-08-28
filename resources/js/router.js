@@ -8,6 +8,14 @@ const routes = [
     component: () => import('./components/Home.vue')
   },
   {
+    name: 'Admin',
+    path: '/admin',
+    component: () => import('./components/Admin.vue'),
+    meta: {
+      roles: ['admin']
+    }
+  },
+  {
     name: '404',
     path: '/:catchAll(.*)',
     component: () => import('./components/NotFound.vue')

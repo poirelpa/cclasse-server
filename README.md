@@ -2,6 +2,8 @@
 
 todo
 
+calendar
+
 programmation / progression
 
 - tests unitaires api
@@ -21,6 +23,8 @@ cahier-journal
 - validation de l'adresse mail
 
 v1
+
+missing holiday zones (DOM-TOM)
 
 programme
 partage de ressources
