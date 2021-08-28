@@ -8,11 +8,11 @@ import Notification from './utils/Notification.vue'
 import mixin from './utils/mixin.js'
 import authModule from './auth'
 import classesModule from './classes'
-import programmingsModule from './programmings'
+import progressionsModule from './progressions'
 
 authModule.init()
 classesModule.init()
-programmingsModule.init()
+progressionsModule.init()
 
 require('./bootstrap')
 

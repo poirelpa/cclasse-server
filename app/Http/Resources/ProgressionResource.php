@@ -3,9 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Controllers\ProgrammingController;
+use App\Http\Controllers\ProgressionController;
 
-class ProgrammingResource extends JsonResource
+class ProgressionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -24,7 +24,7 @@ class ProgrammingResource extends JsonResource
             //'class' => $this->whenLoaded('class_'),
             //TODO 'progressions' => ProgressionResource::collection($this->whenLoaded('progressions')),
             '_links' => [
-                'self' => action([ProgrammingController::class, 'show'], $this),
+                'self' => action([ProgressionController::class, 'show'], $this),
             ]
         ];
     }

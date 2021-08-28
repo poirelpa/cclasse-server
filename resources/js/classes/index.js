@@ -12,7 +12,7 @@ export default {
     store.registerModule('classes', restStore.createStore({
       resourceName: 'classes',
       relationships: {
-        programmings: 'programmings'
+        progressions: 'progressions'
       }
     }))
     store.registerModule('levels', restStore.createStore('levels'))

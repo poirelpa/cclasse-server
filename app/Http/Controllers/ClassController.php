@@ -50,7 +50,7 @@ class ClassController extends Controller
      */
     public function show(ClassModel $class)
     {
-        $class->load('programmings', 'subjects');
+        $class->load('progressions', 'subjects');
         Bouncer::authorize('read', $class);
 
         return new ClassResource($class);

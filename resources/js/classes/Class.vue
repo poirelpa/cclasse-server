@@ -47,6 +47,98 @@
           > {{ level.name }}</label>
         </div>
       </div>
+      <div v-if="isNew">
+        <h2 v-if="Object.keys(levels).length">
+          Jours d'école :
+        </h2>
+        <div class="flex flex-wrap">
+          <div
+            class="mx-2 w-14 flex-shrink-0"
+          >
+            <input
+              id="monday"
+              v-model="checkedDays[1]"
+              type="checkbox"
+              @change="verifDays"
+            >
+            <label
+              for="monday"
+              class="ml-1"
+            > Lundi</label>
+          </div>
+          <div
+            class="mx-2 w-14 flex-shrink-0"
+          >
+            <input
+              id="tuesday"
+              v-model="checkedDays[2]"
+              type="checkbox"
+              @change="verifDays"
+            >
+            <label
+              for="tuesday"
+              class="ml-1"
+            > Mardi</label>
+          </div>
+          <div
+            class="mx-2 w-14 flex-shrink-0"
+          >
+            <input
+              id="wednesday"
+              v-model="checkedDays[3]"
+              type="checkbox"
+              @change="verifDays"
+            >
+            <label
+              for="wednesday"
+              class="ml-1"
+            > Mercredi</label>
+          </div>
+          <div
+            class="mx-2 w-14 flex-shrink-0"
+          >
+            <input
+              id="thursday"
+              v-model="checkedDays[4]"
+              type="checkbox"
+              @change="verifDays"
+            >
+            <label
+              for="thursday"
+              class="ml-1"
+            > Jeudi</label>
+          </div>
+          <div
+            class="mx-2 w-14 flex-shrink-0"
+          >
+            <input
+              id="friday"
+              v-model="checkedDays[5]"
+              type="checkbox"
+              @change="verifDays"
+            >
+            <label
+              for="friday"
+              class="ml-1"
+            > Vendredi</label>
+          </div>
+          <div
+            class="mx-2 w-14 flex-shrink-0"
+          >
+            <input
+              id="staturday"
+              v-model="checkedDays[6]"
+              type="checkbox"
+              @change="verifDays"
+            >
+            <label
+              for="saturday"
+              class="ml-1"
+            > Samedi</label>
+          </div>
+        </div>
+      </div>
+
       <button
         v-if="!id"
         type="submit"
@@ -75,23 +167,21 @@
       </span>
     </loading>
     <div v-if="storeClass.id">
-      <h2>Programmations</h2>
-      <router-link :to="{name:'NewProgramming', params: {classId: id}}">
-        <i class="fas fa-plus" /> Créer
-      </router-link>
-      <ul>
-        <li
-          v-for="prog in storeClass.programmings"
-          :key="prog.id"
-        >
-          <router-link
-            :to="{name:'Programming',params:{classId: id, id:prog.id}}"
-            :title="prog.name"
-          >
-            <i class="fas fa-users" /> {{ prog.name }}
-          </router-link>
-        </li>
-      </ul>
+      <h2>
+        <router-link :to="{name:'Progressions', params: {classId: id}}">
+          <i class="fas fa-th-list" /> Progressions
+        </router-link>
+      </h2>
+      <h2>
+        <router-link :to="{name:'Progressions', params: {classId: id}}">
+          <i class="fas fa-calendar" /> Emplois du temps
+        </router-link>
+      </h2>
+      <h2>
+        <router-link :to="{name:'Progressions', params: {classId: id}}">
+          <i class="fas fa-book-open" /> Cahier journal
+        </router-link>
+      </h2>
     </div>
   </form>
 </template>
@@ -110,6 +200,7 @@ export default {
     return {
       year: 0,
       checkedLevels: [],
+      checkedDays: [false, true, true, false, true, true, false],
       buttonClicked: false
     }
   },
@@ -149,9 +240,12 @@ export default {
   },
   mounted () {
     this.initDataFromApi()
+    this.verifLevels()
+    this.verifDays()
   },
   updated () {
     this.verifLevels()
+    this.verifDays()
   },
   methods: {
     verifLevels () {
@@ -161,6 +255,18 @@ export default {
         this.checkedLevels.length > 0
           ? ''
           : 'Veuillez sélectionner au moins un niveau.'
+      )
+    },
+    verifDays () {
+      const cb = document.getElementById('monday')
+      if (!cb) return
+      cb.setCustomValidity(
+        this.checkedDays.reduce(
+          (prev, val) => prev + (val ? 1 : 0),
+          0
+        ) > 0
+          ? ''
+          : 'Veuillez sélectionner au moins un jour d\'école.'
       )
     },
     initDataFromStore () {
@@ -209,7 +315,7 @@ export default {
         if (!e.handled) {
           this.$notify(`Exception non répertoriée : ${e.message}`)
         } else {
-          this.$handleErrors(e)
+          this.handleErrors(e)
         }
       }
       this.buttonClicked = false

@@ -13,16 +13,6 @@ class CreateProgressionsTables extends Migration
      */
     public function up()
     {
-        Schema::create('programmings', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('color', 7);
-            $table->foreignId('class_id')->constrained('classes')->onDelete('cascade');
-            $table->foreignId('parent_id')->nullable()->constrained('programmings')->onDelete('cascade');
-            $table->foreignId('subject_id')->nullable()->constrained('subjects')->onDelete('cascade');
-            $table->timestamps();
-        });
-
         Schema::create('progressions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -31,7 +21,6 @@ class CreateProgressionsTables extends Migration
             $table->smallInteger('duration')->unsigned();
             $table->foreignId('class_id')->constrained('classes')->onDelete('cascade');
             $table->foreignId('parent_id')->nullable()->constrained('progressions')->onDelete('cascade');
-            $table->foreignId('programmingid')->constrained('programmings')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -53,6 +42,5 @@ class CreateProgressionsTables extends Migration
     {
         Schema::dropIfExists('progression_subject');
         Schema::dropIfExists('progressions');
-        Schema::dropIfExists('programmings');
     }
 }

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Programming;
-use App\Http\Resources\ProgrammingResource;
+use App\Models\Progression;
+use App\Http\Resources\ProgressionResource;
 use App\Models\ClassModel;
 use Illuminate\Http\Request;
 use Bouncer;
 
-class ProgrammingController extends Controller
+class ProgressionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,57 +36,57 @@ class ProgrammingController extends Controller
 
         $params = $request->all();
 
-        $programming = new Programming($params);
-        Bouncer::authorize('update', $programming->class_);
-        $programming->save();
-        return new ProgrammingResource($programming);
+        $progression = new Progression($params);
+        Bouncer::authorize('update', $progression->class_);
+        $progression->save();
+        return new ProgressionResource($progression);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Programming  $programming
+     * @param  \App\Models\Progression  $progression
      * @return \Illuminate\Http\Response
      */
-    public function show(Programming $programming)
+    public function show(Progression $progression)
     {
-        Bouncer::authorize('update', $programming->class_);
+        Bouncer::authorize('update', $progression->class_);
 
-        return new ProgrammingResource($programming);
+        return new ProgressionResource($progression);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Programming  $programming
+     * @param  \App\Models\Progression  $progression
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Programming $programming)
+    public function update(Request $request, Progression $progression)
     {
-        Bouncer::authorize('update', $programming->class_);
+        Bouncer::authorize('update', $progression->class_);
 
         $request->validate([
             'name' => 'required|min:3',
             'color' => 'regex:/^(#[0-9a-zA-Z]{6})?$/i'
         ]);
 
-        $programming->update($request->all());
+        $progression->update($request->all());
 
-        return new ProgrammingResource($programming);
+        return new ProgressionResource($progression);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Programming  $programming
+     * @param  \App\Models\Progression  $progression
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Programming $programming)
+    public function destroy(Progression $progression)
     {
-        Bouncer::authorize('update', $programming->class_);
+        Bouncer::authorize('update', $progression->class_);
 
-        $programming->delete();
+        $progression->delete();
 
         return 204;
     }

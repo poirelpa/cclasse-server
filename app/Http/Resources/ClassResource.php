@@ -21,8 +21,8 @@ class ClassResource extends JsonResource
             'year' => $this->year,
             'user_id' => $this->user->id,
             'levels' => LevelResource::collection($this->levels),
-            'programmings' => ProgrammingResource::collection($this->whenLoaded('programmings')),
-            'subjects' => ProgrammingResource::collection($this->whenLoaded('subjects')),
+            'progressions' => ProgressionResource::collection($this->whenLoaded('progressions')),
+            'subjects' => ProgressionResource::collection($this->whenLoaded('subjects')),
             '_links' => [
                 'self' => action([ClassController::class, 'show'], $this),
             ]

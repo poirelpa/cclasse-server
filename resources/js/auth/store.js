@@ -68,7 +68,7 @@ export default {
 
       context.commit('setUser', {})
       context.dispatch('classes/clear', null, { root: true })
-      context.dispatch('programmings/clear', null, { root: true })
+      context.dispatch('progressions/clear', null, { root: true })
       context.getters.bouncer.setUser({})
     },
     resetPassword (context, data) {

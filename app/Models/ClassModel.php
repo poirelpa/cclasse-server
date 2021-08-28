@@ -31,9 +31,9 @@ class ClassModel extends BaseModel
     {
         return $this->hasMany(Subject::class, 'class_id');
     }
-    public function programmings()
+    public function progressions()
     {
-        return $this->hasMany(Programming::class, 'class_id');
+        return $this->hasMany(Progression::class, 'class_id');
     }
 
     protected static function booted()

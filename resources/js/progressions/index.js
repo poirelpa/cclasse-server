@@ -9,6 +9,11 @@ export default {
       router.addRoute(route)
     })
 
-    store.registerModule('programmings', restStore.createStore('programmings'))
+    store.registerModule('progressions', restStore.createStore({
+      resourceName: 'progressions',
+      relationships: {
+        children: 'progressions'
+      }
+    }))
   }
 }
