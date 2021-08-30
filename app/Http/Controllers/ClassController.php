@@ -56,6 +56,8 @@ class ClassController extends Controller
                 'day',
                 [date_create("{$class->year}-08-16"), date_create("$year2-08-14")]
             )->get();
+        $week = 0;
+        $yearWeek = -1;
         for (
             $day = date_create("{$class->year}-08-16");
             $day < date_create("$year2-08-14");
@@ -82,9 +84,15 @@ class ClassController extends Controller
                 }
             }
             if ($create) {
+                $w = $day->format('W');
+                if ($w != $yearWeek) {
+                    $yearWeek = $w;
+                    $week ++;
+                }
                 Day::create([
                     'class_id' => $class->id,
-                    'day' => $day
+                    'day' => $day,
+                    'week' => $week
                 ]);
             }
         }
