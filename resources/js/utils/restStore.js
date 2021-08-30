@@ -10,8 +10,8 @@ function createRestApi (api, serviceName) {
     return item._links.self
   }
   return {
-    load: () => api.get('/' + serviceName).then(response => response.data.data),
-    create: (item) => api.post('/' + serviceName, item).then(response => response.data.data),
+    load: (url) => api.get(url ?? ('/' + serviceName)).then(response => response.data.data),
+    create: (item, url) => api.post(url ?? ('/' + serviceName), item).then(response => response.data.data),
     read: (item) => api.get(getLink(item)).then(response => response.data.data),
     update: (item) => api.put(getLink(item), item).then(response => response.data.data),
     delete: (item) => api.delete(getLink(item), item)
@@ -94,27 +94,77 @@ export default {
       state: {
         allIds: [],
         byId: {},
+        byParentId: {},
         loadedItems: {},
-        isLoaded: false
+        isLoaded: false,
+        isLoadedFor: []
       },
       getters: {
         find: (state, _, __, rootGetters) => id => inflate(state.byId[id], options.relationships, rootGetters),
         list: (state, getters) => state.allIds.map(id => getters.find(id)),
+        listFor: (state, getters) => parentId => state.byParentId[parentId].map(id => getters.find(id)),
         isLoaded: state => state.isLoaded,
+        isLoadedFor: state => parentId => state.isLoadedFor[parentId],
         isItemLoaded: state => state.loadedItems
       },
       actions: {
-        async load ({ state, commit }) {
+        async load ({ state, commit, rootGetters }, param) {
           if (state.isLoaded) return
 
-          const items = await options.api.load()
+          let items
+          let parent
+          if (options.nested) {
+            if (!param) {
+              throw Error('Missing parameter for nested resource loading')
+            }
+            parent = param
+            if (typeof parent === 'number') {
+              await this.dispatch(`${options.nested}/load`, null, { root: true })
+              parent = rootGetters[`${options.nested}/find`](parent)
+            }
+            if (typeof parent === 'object') {
+              items = await options.api.load(parent._links[options.resourceName])
+
+              items.forEach((item) => {
+                item._parentId = parent.id
+              })
+            } else {
+              throw Error('Wrong parametertype for nested resource loading : expected object or id, got ' + typeof parent)
+            }
+          } else {
+            items = await options.api.load()
+          }
+
           items.forEach((item) => {
             performCommits(flatten(item, options.relationships), commit)
           })
-          commit('setLoaded', true)
+          if (options.nested) {
+            commit('setLoadedFor', parent.id)
+          } else {
+            commit('setLoaded', true)
+          }
         },
-        async create ({ commit }, item) {
-          const savedItem = await options.api.create(item)
+        async create ({ commit, rootGetters }, param) {
+          let item = param
+          let savedItem
+          if (options.nested) {
+            if (!param.parent) {
+              throw Error('Missing parent key in parameter object for nested resource creating')
+            }
+            let parent = param.parent
+            item = param.item
+            if (typeof parent === 'number') {
+              await this.dispatch(`${options.nested}/load`, null, { root: true })
+              parent = rootGetters[`${options.nested}/find`](parent)
+            }
+            if (typeof parent === 'object') {
+              savedItem = await options.api.create(item, parent._links[options.resourceName])
+            } else {
+              throw Error('Wrong parametertype for nested resource loading : expected object or id, got ' + typeof parent)
+            }
+          } else {
+            savedItem = await options.api.create(item)
+          }
           performCommits(flatten(savedItem, options.relationships), commit)
           commit('setItemLoaded', savedItem)
           return savedItem
@@ -148,6 +198,12 @@ export default {
       mutations: {
         add (state, item) {
           state.byId[item.id] = item
+          if (options.nested) {
+            state.byParentId[item._parentId] ??= []
+            if (!state.byParentId[item._parentId].includes(item.id)) {
+              state.byParentId[item._parentId].push(item.id)
+            }
+          }
           if (state.allIds.includes(item.id)) return
           state.allIds.push(item.id)
         },
@@ -156,6 +212,9 @@ export default {
         },
         setItemLoaded (state, item) {
           state.loadedItems[item.id] = true
+        },
+        setLoadedFor (state, value) {
+          state.isLoadedFor.push(value)
         },
         remove (state, item) {
           const index = state.allIds.indexOf(item.id)
@@ -168,6 +227,7 @@ export default {
         clear (state) {
           state.allIds = []
           state.byId = {}
+          state.byParentId = {}
           state.loadedItems = {}
           state.isLoaded = false
         }

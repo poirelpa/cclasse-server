@@ -13,7 +13,8 @@ export default {
       resourceName: 'progressions',
       relationships: {
         children: 'progressions'
-      }
+      },
+      nested: 'classes'
     }))
   }
 }

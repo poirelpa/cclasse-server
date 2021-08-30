@@ -3,17 +3,17 @@ import store from '../store'
 
 export default [
   {
-    path: '/class/:id(\\d+)/progressions',
+    path: '/class/:classId(\\d+)/progressions',
     name: 'Progressions',
     component: Progressions,
     props: (route) => {
-      const id = Number.parseInt(route.params.id)
-      return { id }
+      const classId = Number.parseInt(route.params.classId)
+      return { classId }
     },
     meta: {
       permissions (bouncer, to, from) {
-        const id = Number.parseInt(to.params.id)
-        const cl = store.getters['classes/find'](id)
+        const classId = Number.parseInt(to.params.classId)
+        const cl = store.getters['classes/find'](classId)
         return bouncer.can('update', 'class', cl)
       }
     }

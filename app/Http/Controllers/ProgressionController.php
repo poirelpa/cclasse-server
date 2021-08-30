@@ -15,9 +15,9 @@ class ProgressionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ClassModel $class)
     {
-        //
+        return ProgressionResource::collection($class->progressions);
     }
 
     /**
@@ -26,7 +26,7 @@ class ProgressionController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, ClassModel $class)
     {
         $request->validate([
             'name' => 'required|min:3',

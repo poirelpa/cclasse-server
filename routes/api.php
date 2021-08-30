@@ -3,15 +3,14 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\LevelController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\AcademyController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ProgressionController;
 use App\Http\Controllers\PublicHolidayController;
 use App\Http\Controllers\SchoolHolidayController;
-use App\Http\Controllers\AcademyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,13 +29,15 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware(['auth:api'])->group(function () {
         Route::get('auth/current', [AuthController::class,'current']);
-        Route::apiResource('/users', UserController::class);
-        Route::apiResource('/classes', ClassController::class);
-        Route::apiResource('/progressions', ProgressionController::class);
-        Route::get('/levels', [LevelController::class, 'index']);
-        Route::get('/academies', [AcademyController::class, 'index']);
-        Route::get('/programs', [ProgramController::class, 'index']);
-        Route::get('/programs/{program}', [ProgramController::class, 'show']);
+        Route::apiResource('classes', ClassController::class);
+        Route::apiResource('classes.progressions', ProgressionController::class)
+            ->shallow();
+        Route::apiResource('levels', LevelController::class)
+            ->only(['index']);
+        Route::apiResource('academies', AcademyController::class)
+            ->only(['index']);
+        Route::apiResource('programs', ProgramController::class)
+            ->only(['index', 'show']);
 
 
         Route::prefix('admin')->group(function () {

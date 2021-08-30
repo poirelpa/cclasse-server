@@ -21,11 +21,13 @@ export default {
   },
   data () {
     return {
+      isLoaded: false,
       buttonClicked: false
     }
   },
   computed: {
-    ...mapGetters('progressions', [])
+    progressions () { return this.listFor(this.classId) },
+    ...mapGetters('progressions', ['listFor'])
   },
   watch: {
     classId () {
@@ -35,14 +37,13 @@ export default {
   mounted () {
     this.initDataFromApi()
   },
-  updated () {
-    this.verifLevels()
-  },
   methods: {
     async initDataFromApi () {
+      await this.load(this.classId)
       this.buttonClicked = false
+      this.isLoaded = true
     },
-    ...mapActions('progressions', [])
+    ...mapActions('progressions', ['load'])
   }
 }
 </script>

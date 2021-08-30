@@ -23,7 +23,7 @@ class UserResource extends JsonResource
             'abilities' => $this->getUserAbilities(),
             'roles' => $this->roles,
             '_links' => [
-                'self' => action([UserController::class, 'show'], $this),
+                //'self' => action([UserController::class, 'show'], $this),
             ]
         ];
     }

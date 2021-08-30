@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\ProgressionController;
 
 class ClassResource extends JsonResource
 {
@@ -25,6 +26,7 @@ class ClassResource extends JsonResource
             'subjects' => ProgressionResource::collection($this->whenLoaded('subjects')),
             '_links' => [
                 'self' => action([ClassController::class, 'show'], $this),
+                'progressions' => action([ProgressionController::class, 'index'], $this),
             ]
         ];
     }
