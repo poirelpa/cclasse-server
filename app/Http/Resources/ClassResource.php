@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\ProgressionController;
+use App\Http\Controllers\DayController;
 
 class ClassResource extends JsonResource
 {
@@ -27,6 +28,8 @@ class ClassResource extends JsonResource
             '_links' => [
                 'self' => action([ClassController::class, 'show'], $this),
                 'progressions' => action([ProgressionController::class, 'index'], $this),
+                'days' => action([DayController::class, 'index'], $this),
+                'weeks' => action([DayController::class, 'indexWeeks'], $this),
             ]
         ];
     }

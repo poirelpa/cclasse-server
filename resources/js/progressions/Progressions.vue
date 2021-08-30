@@ -1,10 +1,21 @@
 <template>
   <form
-    class="bg-white shadow rounded p-4 mx-auto max-w-2xl flex-grow"
+    class="bg-white shadow rounded p-4 mx-auto max-w-8xl flex-grow"
     @submit.prevent="save"
   >
     <loading :is-loaded="isLoaded">
       <h1>Progressions</h1>
+      <table>
+        <tr>
+          <td />
+          <td
+            v-for="week in weeks"
+            :key="week.id"
+          >
+            {{ week.week }}
+          </td>
+        </tr>
+      </table>
     </loading>
   </form>
 </template>
@@ -26,8 +37,10 @@ export default {
     }
   },
   computed: {
-    progressions () { return this.listFor(this.classId) },
-    ...mapGetters('progressions', ['listFor'])
+    progressions () { return this.listProgressions(this.classId) },
+    weeks () { return this.listWeeks(this.classId) },
+    ...mapGetters('progressions', { listProgressions: 'listFor' }),
+    ...mapGetters('weeks', { listWeeks: 'listFor' })
   },
   watch: {
     classId () {
@@ -39,11 +52,13 @@ export default {
   },
   methods: {
     async initDataFromApi () {
-      await this.load(this.classId)
+      await this.loadProgressions(this.classId)
+      await this.loadWeeks(this.classId)
       this.buttonClicked = false
       this.isLoaded = true
     },
-    ...mapActions('progressions', ['load'])
+    ...mapActions('progressions', { loadProgressions: 'load' }),
+    ...mapActions('weeks', { loadWeeks: 'load' })
   }
 }
 </script>

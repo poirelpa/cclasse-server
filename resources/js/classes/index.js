@@ -17,5 +17,9 @@ export default {
     }))
     store.registerModule('levels', restStore.createStore('levels'))
     store.registerModule('academies', restStore.createStore('academies'))
+    store.registerModule('weeks', restStore.createStore({
+      resourceName: 'weeks',
+      nested: 'classes'
+    }))
   }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DayResource extends JsonResource
+class WeekResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +16,10 @@ class DayResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'day' => $this->day,
-            'week' => $this->week
+            'week' => $this->week,
+            'starts_on' => $this->starts_on,
+            'ends_on' => $this->ends_on,
+            'number_of_days' => $this->number_of_days
         ];
     }
 }

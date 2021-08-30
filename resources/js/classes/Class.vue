@@ -281,9 +281,7 @@ export default {
         }
       } catch (e) {
         if (!e.handled) {
-          this.$notify(`Exception non répertoriée : ${e.message}`)
-        } else {
-          this.handleErrors(e)
+          this.handleError(e)
         }
       }
       this.buttonClicked = false

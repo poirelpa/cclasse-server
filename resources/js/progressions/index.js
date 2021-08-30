@@ -11,9 +11,6 @@ export default {
 
     store.registerModule('progressions', restStore.createStore({
       resourceName: 'progressions',
-      relationships: {
-        children: 'progressions'
-      },
       nested: 'classes'
     }))
   }

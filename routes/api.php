@@ -9,6 +9,7 @@ use App\Http\Controllers\LevelController;
 use App\Http\Controllers\AcademyController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ProgressionController;
+use App\Http\Controllers\DayController;
 use App\Http\Controllers\PublicHolidayController;
 use App\Http\Controllers\SchoolHolidayController;
 
@@ -38,6 +39,12 @@ Route::prefix('v1')->group(function () {
             ->only(['index']);
         Route::apiResource('programs', ProgramController::class)
             ->only(['index', 'show']);
+        Route::apiResource('classes.days', DayController::class)
+            ->only(['index']);
+
+        Route::get('classes/{class}/weeks', [DayController::class, 'indexWeeks']);
+        Route::apiResource('classes.days', DayController::class)
+            ->only(['index']);
 
 
         Route::prefix('admin')->group(function () {
