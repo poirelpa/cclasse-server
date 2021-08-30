@@ -124,7 +124,6 @@ export default {
             }
             if (typeof parent === 'object') {
               items = await options.api.load(parent._links[options.resourceName])
-              console.log(options.resourceName, items)
               items.forEach((item) => {
                 item._parentId = parent.id
               })
@@ -215,6 +214,7 @@ export default {
         },
         setLoadedFor (state, parentId) {
           if (state.isLoadedFor.includes(parentId)) return
+          state.byParentId[parentId] ??= []
           state.isLoadedFor.push(parentId)
         },
         remove (state, item) {
