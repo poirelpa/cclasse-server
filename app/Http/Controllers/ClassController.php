@@ -58,6 +58,8 @@ class ClassController extends Controller
             )->get();
         $week = 0;
         $yearWeek = -1;
+        $period = 0;
+        $newPeriod = true;
         for (
             $day = date_create("{$class->year}-08-16");
             $day < date_create("$year2-08-14");
@@ -79,6 +81,7 @@ class ClassController extends Controller
                 foreach ($schoolHolidays as $sh) {
                     if ($sh->starts_on <= $day->format('Y-m-d') && $sh->ends_on >= $day->format('Y-m-d')) {
                         $create = false;
+                        $newPeriod = true;
                         break;
                     }
                 }
@@ -92,8 +95,14 @@ class ClassController extends Controller
                 Day::create([
                     'class_id' => $class->id,
                     'day' => $day,
+                    'period' => $period,
+                    'new_period' => $newPeriod,
                     'week' => $week
                 ]);
+                if ($newPeriod) {
+                    $period ++;
+                    $newPeriod = false;
+                }
             }
         }
 

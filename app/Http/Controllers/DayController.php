@@ -30,7 +30,7 @@ class DayController extends Controller
     {
         return WeekResource::collection(
             $class->days()
-            ->selectRaw('week as id, week as week, min(day) as starts_on, max(day) as ends_on, count(day) as number_of_days')
+            ->selectRaw('week as id, week as week, min(day) as starts_on, max(day) as ends_on, count(day) as number_of_days, max(period) as period, max(new_period) as new_period')
             ->groupBy('week')->get()
         );
     }

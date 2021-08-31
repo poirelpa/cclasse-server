@@ -17,6 +17,8 @@ class DayResource extends JsonResource
         return [
             'id' => $this->id,
             'day' => $this->day,
+            'period' => $this->day,
+            'new_period' => $this->day,
             'week' => $this->week
         ];
     }

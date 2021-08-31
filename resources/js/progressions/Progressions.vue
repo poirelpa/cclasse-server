@@ -9,15 +9,18 @@
         <div
           v-for="week in weeks"
           :key="week.id"
-          class="px-1"
-          :class="'col-start-' + (week.week + 1)"
+          class="px-1 border-sec-500 text-center"
+          :class="{
+            ['col-start-' + (week.week + 1)]: true,
+            'border-l': week.new_period
+          }"
         >
           {{ week.week }}
         </div>
         <div
           v-for="progression in progressions"
           :key="progression.id"
-          class="border border-black"
+          class="border-2 border-pri-500 rounded px-2"
           :class="{
             ['col-start-' + (progression.start + 1)]: progression.start !== undefined,
             'col-start-1': progression.start === undefined

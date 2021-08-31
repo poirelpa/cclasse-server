@@ -14,5 +14,5 @@ class Day extends BaseModel
      *
      * @var array
      */
-    protected $fillable = [ 'day', 'week', 'class_id' ];
+    protected $fillable = [ 'day', 'week', 'period', 'new_period', 'class_id' ];
 }

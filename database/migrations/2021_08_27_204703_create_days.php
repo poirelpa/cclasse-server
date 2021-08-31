@@ -17,6 +17,8 @@ class CreateDays extends Migration
             $table->id();
             $table->date('day');
             $table->smallInteger('week');
+            $table->smallInteger('period');
+            $table->boolean('new_period');
             $table->foreignId('class_id')->constrained('classes')->onDelete('cascade');
             $table->timestamps();
         });

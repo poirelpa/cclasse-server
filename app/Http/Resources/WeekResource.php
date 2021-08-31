@@ -17,6 +17,8 @@ class WeekResource extends JsonResource
         return [
             'id' => $this->id,
             'week' => $this->week,
+            'period' => $this->period,
+            'new_period' => $this->new_period,
             'starts_on' => $this->starts_on,
             'ends_on' => $this->ends_on,
             'number_of_days' => $this->number_of_days
