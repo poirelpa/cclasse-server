@@ -29,14 +29,16 @@
           {{ progression.name }}
         </div>
       </div>
-      <div>
-        <button
-          type="button"
-          @click="addNewProgression"
-        >
+      <h2>
+        <router-link :to="{ name: 'NewProgression', params: { classId: classId } }">
           <i class="fas fa-plus" /> Créer
-        </button>
-      </div>
+        </router-link>
+      </h2>
+      <h2>
+        <router-link :to="{ name: 'Class', params: { id: classId } }">
+          <i class="fas fa-users" /> Retour
+        </router-link>
+      </h2>
     </loading>
   </form>
 </template>
@@ -79,19 +81,10 @@ export default {
     async initDataFromApi () {
       await this.loadWeeks(this.classId)
       this.weeks = this.listWeeks(this.classId)
-      console.log(this.$store.getters['weeks/listFor'](this.classId))
       await this.loadProgressions(this.classId)
       this.progressions = this.listProgressions(this.classId)
       this.buttonClicked = false
       this.isLoaded = true
-    },
-    addNewProgression () {
-      const prog = {
-        id: this.localIdSequence--,
-        name: 'nouvelle progression'
-      }
-      this.progressions.push(prog)
-      this.added.push(prog)
     },
     ...mapActions('progressions', { loadProgressions: 'load' }),
     ...mapActions('weeks', { loadWeeks: 'load' })
