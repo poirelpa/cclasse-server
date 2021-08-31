@@ -62,11 +62,13 @@
         <classes />
       </div>
     </side-bar>
-    <div class="relative md:ml-64 bg-gray-50 p-3">
-      <notification :message="notification" />
-    </div>
-    <div class="relative md:ml-64 bg-gray-50 p-3 min-h-screen flex items-center md:justify-center  ">
-      <router-view />
+    <div class="relative md:ml-64 bg-gray-50 p-3 min-h-screen flex items-center md:justify-center flex-wrap">
+      <div class="w-full">
+        <div class="p-3 w-full">
+          <notification :message="notification" />
+        </div>
+        <router-view />
+      </div>
     </div>
   </div>
 </template>
